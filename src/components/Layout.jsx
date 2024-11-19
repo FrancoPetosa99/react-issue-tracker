@@ -19,7 +19,8 @@ function Layout({ children }) {
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'column',
-        overflow: "auto"
+        overflow: "auto",
+        padding: "5vw 2vw"
     };
     
     const sideBarContainerStyles = {

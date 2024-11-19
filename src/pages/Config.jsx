@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import PageInDevelopment from '../components/PageInDevelopment';
 
 
-function Home() {
+function Config() {
   return (
     <Layout>
       <PageInDevelopment></PageInDevelopment>
@@ -11,4 +11,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Config;

@@ -1,9 +1,10 @@
 import React from 'react';
 import LogInInfo from '../components/LogInInfo';
-import LogInForm from '../components/LogInForm';
-import { Link } from 'react-router-dom';
+import RegisterForm from '../components/RegisterForm';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Register() {
+    const navigate = useNavigate();
     const loginStyles = {
         background: 'linear-gradient(to bottom, #475BEB, #030D59)',
         minHeight: '100vh'
@@ -39,13 +40,9 @@ function Login() {
         <div style={loginStyles}>
             {/* Header with Register Button */}
             <div style={headerStyle}>
-                <p className="m-0">¿Aún no eres Miembro?</p>
-                <Link 
-                    to="/register"
-                    style={{
-                        ...registerButtonStyle,
-                        textDecoration: 'none'
-                    }}
+                <p className="m-0">¿Ya eres Miembro?</p>
+                <button onClick={()=> navigate("/login")}
+                    style={registerButtonStyle}
                     onMouseOver={(e) => {
                         e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
                     }}
@@ -53,8 +50,8 @@ function Login() {
                         e.target.style.backgroundColor = 'transparent'
                     }}
                 >
-                    Register
-                </Link>
+                    Login
+                </button>
             </div>
 
             {/* Main Content */}
@@ -66,11 +63,11 @@ function Login() {
 
                 {/* Right Side - Login Form */}
                 <div className='w-50 d-flex justify-content-center align-items-center'>
-                    <LogInForm />
+                    <RegisterForm />
                 </div>
             </div>
         </div>
     );
 }
 
-export default Login;
+export default Register;

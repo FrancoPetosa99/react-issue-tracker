@@ -1,0 +1,20 @@
+.nav-item-styles{
+    display: 'flex';
+    flex-direction: row;
+    justify-content: 'center';
+    align-items: "center";
+    color: 'white';
+    min-width: 3vw;
+    gap: '1vw' 
+}
+
+.nav-item-styles:hover{
+    display: 'flex';
+    flex-direction: row;
+    justify-content: 'center';
+    background-color: azure;
+    align-items: "center";
+    margin: '10px 0';
+    color: '#030D59';
+    gap: '1vw' 
+}
