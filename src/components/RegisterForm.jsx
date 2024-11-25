@@ -1,9 +1,50 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useState } from 'react';
+import Toast from '../utils/Toast';
 
 function RegisterForm() {
+    
+    const [ formData, setFormData ] = useState({
+        nombre: '',
+        apellido: '',
+        email: '',
+        nombreUsuario: '',
+        empresa: '',
+        descripcion: '',
+        cuil: '',
+        password: '',
+        confirmPassword: '',
+        destacado: true
+    });
+    const [ loading, setLoading ] = useState(false);
+
+    const handleSubmit = (e)=> {
+        e.preventDefault();
+        setLoading(true);
+        fetch('http://localhost:8080' + '/api/auth/register', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData) 
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            Toast({ icon: 'success', title: 'Usuario Registrado', text: 'Se ha creado su cuenta con exito' });
+        })
+        .catch(()=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error' }))
+        .finally(()=> setLoading(false));
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
     const formStyle = {
         backgroundColor: "white",
         padding: "2.5rem",
@@ -34,7 +75,7 @@ function RegisterForm() {
     }
 
     return (
-        <form style={formStyle}>
+        <form onSubmit={handleSubmit} style={formStyle}>
             <div className="mb-4">
                 <p className="text-muted mb-2">EMPECEMOS</p>
                 <h2 className="mb-4">Crear Cuenta</h2>
@@ -46,22 +87,42 @@ function RegisterForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Nombre"
+                    name='nombre'
+                    value={formData.nombre}
+                    onChange={handleChange}
                 />
                 <input 
                     type="text" 
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Apellido"
+                    name='apellido'
+                    value={formData.apellido}
+                    onChange={handleChange}
                 />
             </div>
 
-            <div className="mb-3">
+            <div className="d-flex gap-2 mb-3">
                 <input 
                     type="email" 
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Correo electrónico"
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
                 />
+
+                <input 
+                    type="text" 
+                    className="form-control" 
+                    style={inputStyle}
+                    placeholder="Nombre de Usuario"
+                    name='nombreUsuario'
+                    value={formData.nombreUsuario}
+                    onChange={handleChange}
+                />
+
             </div>
 
             <div className="mb-3">
@@ -70,6 +131,9 @@ function RegisterForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Descripción"
+                    name='descripcion'
+                    value={formData.descripcion}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -79,31 +143,43 @@ function RegisterForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Empresa"
+                    name='empresa'
+                    value={formData.empresa}
+                    onChange={handleChange}
                 />
                 <input 
                     type="text" 
                     className="form-control" 
                     style={inputStyle}
                     placeholder="CUIL"
+                    name='cuil'
+                    value={formData.cuil}
+                    onChange={handleChange}
                 />
             </div>
 
-            <div className="mb-3">
+            <div className="d-flex gap-2 mb-3">
+
                 <input 
                     type="password" 
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Contraseña"
+                    name='password'
+                    value={formData.password}
+                    onChange={handleChange}
                 />
-            </div>
 
-            <div className="mb-3">
                 <input 
                     type="password" 
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Repetir Contraseña"
+                    name='confirmPassword'
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                 />
+                
             </div>
 
             <button 

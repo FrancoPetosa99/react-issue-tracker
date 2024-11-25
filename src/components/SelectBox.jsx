@@ -1,15 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function SelectBox({ label, options, onChangeFunction }){
+function SelectBox({ name, label, options, handleChange }){
 
     return( 
         <div>
             <label>{label}</label>
-            <select onChange={(e) => onChangeFunction(e.target.value, label)} class="form-select form-select-sm" aria-label="Small select example">
-                <option value="Todos">Todos</option>
-                {options.map((option)=>{
-                    return (<option value={option}>{option}</option>)
-                })}
+            <select name={name} onChange={handleChange} class="form-select form-select-sm" aria-label="Small select example">
+                { options.map(option => <option key={option.value} value={option.value}>{option.text}</option>) }
             </select>
         </div>
     );

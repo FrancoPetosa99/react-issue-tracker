@@ -1,12 +1,10 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-
-
+import React from 'react';
 
 function LogInInfo() {
+
     const stylesLogo = {
         width: "200px",
         height: "auto", // fixed typo
@@ -16,7 +14,6 @@ function LogInInfo() {
     const stylesText = {
         color: "#030D59",
         background: "white",
-     
         padding: "0.5rem",
         borderRadius: "8px",
         boxShadow:  "drop-shadow(7px 7px 15px rgba(0, 0, 0, 0.3))"

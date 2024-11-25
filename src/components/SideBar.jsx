@@ -6,13 +6,24 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogOutButton'
-
-    
-
+import ConfirmModal from '../utils/ConfirmModal';
+import Toast from '../utils/Toast';
 
 function SideBar() {
+
     const navegate = useNavigate();
-    const { isAuthenticated, logout } = useContext(AuthContext);
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+    const logout = (event) => {
+        event.preventDefault();
+        ConfirmModal(() => {
+            setIsAuthenticated(false);
+            Toast({title: 'Se ha cerrado la sesión con éxito'});
+            navegate("/login");
+        }, {
+          text: '¿Estás seguro de que deseas cerrar sesión? Tendrás que volver a iniciar sesión para acceder a tu cuenta.'
+        });
+      };
     
     const stylesNav = {
         height: '100vh',
@@ -31,6 +42,7 @@ function SideBar() {
         height: 'auto',
         width: '100px',
     };
+
     const navTextLink = {
         color: 'white'
     };
@@ -43,7 +55,6 @@ function SideBar() {
         alignItems: "center",
         color: 'white',
         gap: '2vw'
-        
     };
 
     const navTextButton = {
@@ -51,6 +62,7 @@ function SideBar() {
         background: "transparent",
         border: "none"
     }
+
     const navItemsLayoutStyles = {
         display: 'flex',
         flexDirection: 'column',
@@ -96,7 +108,7 @@ function SideBar() {
                 {isAuthenticated && (
                     <li style={navItemStyles}>
                         
-                        {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} setIsAuthenticated={logout} />}
+                        {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} logout={logout} />}
                     </li>
                 )}
             </ul>

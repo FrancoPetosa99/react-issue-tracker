@@ -1,9 +1,25 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useContext, useState } from 'react';
+import Toast from '../utils/Toast';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function LogInForm() {
+
+    const [ formData, setFormData ] = useState({
+        email: '',
+        password: ''
+    });
+
+    const [ loading, setLoading ] = useState(false);
+
+    const navegate = useNavigate();
+
+    const { setIsAuthenticated, setAuthToken } = useContext(AuthContext);
+
+
     const formStyle = {
         backgroundColor: "white",
         padding: "2.5rem",
@@ -33,8 +49,37 @@ function LogInForm() {
         marginTop: "1rem"
     }
 
+    const handleSubmit = (e)=> {
+        e.preventDefault();
+        setLoading(true);
+        fetch('http://localhost:8080' + '/api/auth/login', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData) 
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            if (data.status !== 'Success') throw new Error(data.message);
+            setIsAuthenticated(true);
+            setAuthToken(data.data);
+            Toast({ icon: 'success', title: 'Bienvenido', text: 'Inicio de sesión exitoso' });
+            navegate('/')
+        })
+        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' +  e.message }))
+        .finally(()=> setLoading(false));
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
     return (
-        <form style={formStyle}>
+        <form onSubmit={handleSubmit} style={formStyle}>
             <div className="mb-4">
                 <p className="text-muted mb-2">¡BIENVENIDO DE VUELTA!</p>
                 <h2 className="mb-4">Log In</h2>
@@ -46,6 +91,9 @@ function LogInForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Email"
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -55,6 +103,9 @@ function LogInForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Password"
+                    name='password'
+                    value={formData.password}
+                    onChange={handleChange}
                 />
             </div>
 

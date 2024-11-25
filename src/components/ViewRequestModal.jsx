@@ -1,91 +1,117 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, {useState} from 'react';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React from 'react';
 
+function ViewRequestModal({ setShow, solicitud }) {
 
-function ViewRequestModal({solicitud}) {
-    
+    const handleClose = () => setShow(false);
+
     const getPriorityColor = (priority) => {
         const styles = {
-            urgente: {
+            'Urgente': {
                 backgroundColor: '#900000' // Darkest/most intense red
             },
-            alta: {
+            'Alta': {
                 backgroundColor: '#dc3545' // Bright red
             },
-            media: {
+            'Media': {
                 backgroundColor: '#ff6b6b' // Medium red
             },
-            baja: {
+            'Baja': {
                 backgroundColor: '#ffb4b4' // Light red
             }
         };
 
-        return styles[priority?.toLowerCase()] || { backgroundColor: '#dc3545' };
+        return styles[priority] || { backgroundColor: '#dc3545' };
     };
-    
+
     return (
-        <div className="modal" id="viewRequestModal" tabIndex="-1">
-            <div className="modal-dialog modal-dialog-scrollable modal-lg">
-                <div className="modal-content gap-3">
-                    <div className={`modal-header text-white`} style={getPriorityColor(solicitud?.priority)}>
-                        <div className="d-flex flex-column">
-                            <h5 className="modal-title">Solicitud {solicitud?.cod}</h5>
-                            <small>Fecha: {solicitud?.date}</small>
-                        </div>
-                        <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div className="container">
-                        <div className="row mb-3">
-                            <div className="col">
-                                <label className="form-label fw-bold">Tipo</label>
-                                <p>{solicitud?.type}</p>
+        <>
+            {/* Fondo del modal */}
+            <div className="modal-backdrop fade show"></div>
+            
+            {/* Modal principal */}
+            <div className="modal fade show" tabIndex="-1" style={{ display: 'block' }} role="dialog">
+                <div className="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div className="modal-content gap-3">
+                        {/* Header */}
+                        <div
+                            className="modal-header text-white"
+                            style={getPriorityColor(solicitud.prioridad)}
+                        >
+                            <div className="d-flex flex-column">
+                                <h5 className="modal-title">Solicitud {solicitud.codigo}</h5>
+                                <small>Fecha: {solicitud.createdAt || 'N/A'}</small>
                             </div>
-                            <div className="col">
-                                <label className="form-label fw-bold">Estado</label>
-                                <p>{solicitud?.state}</p>
+                            <button
+                                type="button"
+                                className="btn-close btn-close-white"
+                                aria-label="Close"
+                                onClick={handleClose}
+                            ></button>
+                        </div>
+
+                        {/* Body */}
+                        <div className="modal-body">
+                            <div className="container">
+                                <div className="row mb-3">
+                                    <div className="col">
+                                        <label className="form-label fw-bold">Tipo</label>
+                                        <p>{solicitud.tipoRequerimiento || 'N/A'}</p>
+                                    </div>
+                                    <div className="col">
+                                        <label className="form-label fw-bold">Estado</label>
+                                        <p>{solicitud.estado || 'N/A'}</p>
+                                    </div>
+                                    <div className="col">
+                                        <label className="form-label fw-bold">Prioridad</label>
+                                        <p>{solicitud.prioridad || 'N/A'}</p>
+                                    </div>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label fw-bold">Asunto</label>
+                                    <p>{solicitud.asunto || 'N/A'}</p>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label fw-bold">Descripción</label>
+                                    <p>{solicitud.descripcion || 'N/A'}</p>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label fw-bold">Propietario</label>
+                                    <p>{solicitud.usuarioPropietario || 'N/A'}</p>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label fw-bold">Archivos adjuntos</label>
+                                    <div className="list-group">
+                                        <a href="#" className="list-group-item list-group-item-action">
+                                            <i className="bi bi-file-earmark me-2"></i>archivo.pdf
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col">
-                                <label className="form-label fw-bold">Prioridad</label>
-                                <p>{solicitud?.priority}</p>
-                            </div>
                         </div>
 
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Categoría</label>
-                            <p>{solicitud?.category}</p>
+                        {/* Footer */}
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={handleClose}
+                            >
+                                Cerrar
+                            </button>
                         </div>
-
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Asunto</label>
-                            <p>{solicitud?.subject}</p>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Propietario</label>
-                            <p>{solicitud?.author}</p>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Archivos adjuntos</label>
-                            <div className="list-group">
-                                <a href="#" className="list-group-item list-group-item-action">
-                                    <i className="bi bi-file-earmark me-2"></i>archivo.pdf
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        </>
+    );
 }
 
-export default ViewRequestModal
-
+export default ViewRequestModal;

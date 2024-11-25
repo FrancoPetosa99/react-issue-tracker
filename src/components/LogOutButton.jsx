@@ -1,21 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Toast from '../utils/Toast';
-import ConfirmModal from '../utils/ConfirmModal';
 
+function LogoutButton({ logout }) {
 
-function LogoutButton({ navIcon, styleButton, setIsAuthenticated }) {
-  const navigate = useNavigate();
+  const navIcon = {
+    marginRight: "1rem"
+  };
 
-  const logout = (event) => {
-    event.preventDefault();
-    ConfirmModal(() => {
-      setIsAuthenticated(false);
-      Toast({title: 'Se ha cerrado la sesión con éxito'});
-      navigate("/login");
-    }, {
-      text: '¿Estás seguro de que deseas cerrar sesión? Tendrás que volver a iniciar sesión para acceder a tu cuenta.'
-    });
+  const styleButton = {
+    color: 'white',
+    background: "transparent",
+    border: "none"
   };
 
   return (

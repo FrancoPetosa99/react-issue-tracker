@@ -4,6 +4,7 @@ import LogInForm from '../components/LogInForm';
 import { Link } from 'react-router-dom';
 
 function Login() {
+    
     const loginStyles = {
         background: 'linear-gradient(to bottom, #475BEB, #030D59)',
         minHeight: '100vh'
