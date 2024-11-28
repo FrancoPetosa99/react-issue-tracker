@@ -55,12 +55,12 @@ function RegisterForm() {
     }
 
     const inputStyle = {
-        padding: "0.8rem",
-        marginBottom: "1rem",
+        padding: "0.5rem",
+        marginBottom: "0.1  rem",
         borderRadius: "12px",
         border: "1px solid #e0e0e0",
         backgroundColor: "#fff",
-        fontSize: "0.9rem"
+        fontSize: "0.7rem"
     }
 
     const buttonStyle = {
@@ -71,14 +71,19 @@ function RegisterForm() {
         border: "none",
         color: "white",
         fontWeight: "500",
-        marginTop: "1rem"
+        marginTop: "1rem",
+        fontSize: "0.9rem"
+        
     }
 
     return (
+        
+
+        
         <form onSubmit={handleSubmit} style={formStyle}>
             <div className="mb-4">
-                <p className="text-muted mb-2">EMPECEMOS</p>
-                <h2 className="mb-4">Crear Cuenta</h2>
+                <p className="text-muted mb-1" style={{fontSize: "0.9rem"}}>EMPECEMOS</p>
+                <h2 className="mb-1" style={{fontSize: "2rem"}}>Crear Cuenta</h2>
             </div>
             
             <div className="d-flex gap-2 mb-3">
@@ -190,19 +195,20 @@ function RegisterForm() {
                 REGISTRARSE
             </button>
 
-            <div className="text-center mt-3">
-                <span className="text-muted">¿Ya eres miembro? </span>
-                <a href="#" className="text-decoration-none">LOGIN</a>
+            <div className="text-center mt-2">
+                <span className="text-muted" style={{fontSize: "0.6rem"}}>¿Ya eres miembro? </span>
+                <a href="#" className="text-decoration-none" style={{fontSize: "0.6rem"}}>LOGIN</a>
             </div>
 
-            <div className="text-center mt-4">
-                <small className="text-muted">
+            <div className="text-center mt-2">
+                <small style={{fontSize: "0.6rem"}} className="text-muted">
                     By Creating an Account, it means you agree to our{' '}
                     <a href="#" className="text-decoration-none">Privacy Policy</a> and{' '}
                     <a href="#" className="text-decoration-none">Terms of Service</a>
                 </small>
             </div>
         </form>
+
     );
 }
 

@@ -21,12 +21,13 @@ function Register() {
     }
 
     const headerStyle = {
-        padding: '1rem 2rem',
+        padding: '1rem 1rem',
         color: 'white',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        gap: '1rem'
+        gap: '1rem',
+        fontSize: "0.8rem"
     }
 
     const contentStyle = {
@@ -37,10 +38,10 @@ function Register() {
     }
 
     return (
-        <div style={loginStyles}>
+        <div  style={loginStyles}>
             {/* Header with Register Button */}
             <div style={headerStyle}>
-                <p className="m-0">¿Ya eres Miembro?</p>
+                <p className="m-0 ">¿Ya eres Miembro?</p>
                 <button onClick={()=> navigate("/login")}
                     style={registerButtonStyle}
                     onMouseOver={(e) => {

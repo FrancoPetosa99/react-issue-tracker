@@ -36,14 +36,38 @@ function RequestTable() {
         .finally(()=> setLoading(false));
     }, []);
 
+    useEffect(() => {
+        setLoading(true);
+        fetch('http://localhost:8080' + '/api/requerimientos/', { 
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authToken
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            if (data.status !== 'Success') throw new Error(data.message);
+            setSolicitudes(data.data);
+            setFilteredSolicitudes(data.data);
+        })
+        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
+        .finally(()=> setLoading(false));
+    }, [show]);
+
+    useEffect(() => {
+        console.log("filter")
+    }, [filteredSolicitudes]);
+
+
     const handleNewRequest = () => {
         setShow(true);
     };
 
-    const filterSolicitudes = () => {
+    const filterSolicitudes = (updatedFilter) => {
         const filterableKeys = ['tipoRequerimiento', 'prioridad', 'estado']; // Claves correctas del objeto
     
-        const activeFilters = Object.entries(filter)
+        const activeFilters = Object.entries(updatedFilter)
             .filter(([key, values]) => filterableKeys.includes(key) && values.length > 0);
     
         if (!activeFilters.length) return solicitudes;
@@ -70,8 +94,9 @@ function RequestTable() {
         }
     
         setFilter(updatedFilter);
-        const updatedSolicitudes = filterSolicitudes(); // Aplicar los filtros actualizados
+        const updatedSolicitudes = filterSolicitudes(updatedFilter); // Aplicar los filtros actualizados
         setFilteredSolicitudes(updatedSolicitudes);
+        
     };
 
     const removeFilter = (tipo, filterName) => {
@@ -80,7 +105,7 @@ function RequestTable() {
             [filterName]: filter[filterName].filter(item => item !== tipo)
         };
         setFilter(updatedFilter);
-        const updatedSolicitudes = filterSolicitudes();
+        const updatedSolicitudes = filterSolicitudes(updatedFilter);
         setFilteredSolicitudes(updatedSolicitudes);
     };
 
@@ -129,15 +154,15 @@ function RequestTable() {
         <div className="container d-flex mt-2  gap-2 flex-column justify-content-start align-items-center vh-100 vw-auto">
             <div class="container row">
                 <div class="col-3  d-flex container justify-content-start align-items-end">
-                    <button type="button" className="btn btn-outline-primary   justify-content-center align-items-center" onClick={handleNewRequest}>Nueva Solicitud</button>
+                    <button type="button" className="btn btn-outline-primary   justify-content-center align-items-center" onClick={handleNewRequest}>+ Nueva Solicitud</button>
                 </div>
                 <div class="container col-9 row gap-3  ">
                     <div class="col">
                         <SelectBox handleChange={changeFilter} name={'tipoRequerimiento'} label="Tipo" options={[
                             { value: 'Todos', text: 'Todos' },
-                            { value: 'Requerimiento Hardware', text: 'Requerimiento Hardware' },
-                            { value: 'Errores', text: 'Errores' },
-                            { value: 'Gestión Operativa', text: 'Gestión Operativa' }
+                            { value: 'REH', text: 'Requerimiento Hardware' },
+                            { value: 'ERR', text: 'Errores' },
+                            { value: 'GS', text: 'Gestión Operativa' }
                         ]} />
                     </div>
                     <div class="col">

@@ -61,6 +61,8 @@ function LogInForm() {
         .then((data) => {
             console.log(data);
             if (data.status !== 'Success') throw new Error(data.message);
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("authToken", data.data);
             setIsAuthenticated(true);
             setAuthToken(data.data);
             Toast({ icon: 'success', title: 'Bienvenido', text: 'Inicio de sesión exitoso' });

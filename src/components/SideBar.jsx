@@ -17,6 +17,8 @@ function SideBar() {
     const logout = (event) => {
         event.preventDefault();
         ConfirmModal(() => {
+            localStorage.setItem("isAuthenticated", "false");
+            localStorage.setItem("authToken", null);
             setIsAuthenticated(false);
             Toast({title: 'Se ha cerrado la sesión con éxito'});
             navegate("/login");

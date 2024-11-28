@@ -45,8 +45,10 @@ function NewRequestModal({ setShow }) {
             if (data.status !== 'Success') throw new Error(data.message);
             Toast({ icon: 'success', title: 'Requerimiento Creado' });
         })
+        .then(()=>{setShow(false)})
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
         .finally(()=> setLoading(false));
+        
     };
 
     return (

@@ -3,6 +3,7 @@ import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useState } from 'react';
 import ViewRequestModal from './ViewRequestModal';
+import dayjs from 'dayjs';
 
 function Table({ solicitudes }) {
 
@@ -51,7 +52,7 @@ function Table({ solicitudes }) {
             <tbody className="table-group-divider">
                 {solicitudes.map((solicitud) => (
                     <tr key={solicitud.id}>
-                        <td>{solicitud.createdAt}</td>
+                        <td>{dayjs(solicitud.createdAt).format("YYYY-MM-DD")}</td>
                         <td>{solicitud.codigo}</td>
                         <td style={getPriorityColor(solicitud.prioridad)}>
                             {solicitud.prioridad}
