@@ -6,7 +6,7 @@ import PageInDevelopment from '../components/PageInDevelopment';
 function Home() {
   return (
     <Layout>
-      <PageInDevelopment></PageInDevelopment>
+      <PageInDevelopment />
     </Layout>
   );
 }

@@ -4,27 +4,29 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, {useState, useEffect, useContext } from 'react';
 import Table from './Table';
 import NewRequestModal from './NewRequestModal';
-import SelectBox from './SelectBox';
 import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
+import getRequerimientos from '../services/getRequerimientos';
+import getTipoRequerimientos from '../services/getTipoRequerimientos';
+import Filter from './Filter';
+import getCategoriaRequerimientos from '../services/getCategoriaRequerimientos';
 
 function RequestTable() {
 
     const [ show, setShow ] = useState(false);
     const [ loading, setLoading ] = useState(false);
-    const [filter, setFilter] = useState({ tipoRequerimiento: [], prioridad: [], estado: [] });
+    const [filter, setFilter] = useState({ tipoRequerimiento: [], categoriaRequerimiento: [], prioridad: [], estado: [] });
     const [solicitudes, setSolicitudes] = useState([]);
     const [filteredSolicitudes, setFilteredSolicitudes] = useState([]);
     const { authToken } = useContext(AuthContext);
+    const [requerimientoTipos, setRequerimientoTipos] = useState([]);
+    const [requerimientoCategorias, setRequerimientoCategorias] = useState([]);
     
     useEffect(() => {
+
         setLoading(true);
-        fetch('http://localhost:8080' + '/api/requerimientos/', { 
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + authToken
-            }
-        })
+        
+        getRequerimientos(authToken)
         .then((res) => res.json())
         .then((data) => {
             console.log(data);
@@ -34,38 +36,25 @@ function RequestTable() {
         })
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
         .finally(()=> setLoading(false));
+
+        getTipoRequerimientos(authToken)
+        .then((res) => res.json())
+        .then((data) => {
+            const mappedArr = data.data.map(tipoRequerimiento => {
+                return { value: tipoRequerimiento.codigo, text: tipoRequerimiento.descripcion, id: tipoRequerimiento.id };
+            });
+            setRequerimientoTipos([ ...mappedArr ]);
+        })
+        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
+        .finally(()=> setLoading(false));
+
     }, []);
 
-    useEffect(() => {
-        setLoading(true);
-        fetch('http://localhost:8080' + '/api/requerimientos/', { 
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + authToken
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            if (data.status !== 'Success') throw new Error(data.message);
-            setSolicitudes(data.data);
-            setFilteredSolicitudes(data.data);
-        })
-        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
-        .finally(()=> setLoading(false));
-    }, [show]);
-
-    useEffect(() => {
-        console.log("filter")
-    }, [filteredSolicitudes]);
-
-
-    const handleNewRequest = () => {
-        setShow(true);
-    };
+    const handleNewRequest = () => setShow(true);
 
     const filterSolicitudes = (updatedFilter) => {
-        const filterableKeys = ['tipoRequerimiento', 'prioridad', 'estado']; // Claves correctas del objeto
+        
+        const filterableKeys = ['tipoRequerimiento', 'categoriaRequerimiento', 'prioridad', 'estado'];
     
         const activeFilters = Object.entries(updatedFilter)
             .filter(([key, values]) => filterableKeys.includes(key) && values.length > 0);
@@ -74,19 +63,20 @@ function RequestTable() {
     
         return solicitudes.filter(solicitud =>
             activeFilters.every(([key, values]) =>
-                values.includes(solicitud[key]) // Comparar directamente con la clave correcta
+                values.includes(solicitud[key])
             )
         );
     };
 
     const changeFilter = (e) => {
+
         const value = e.target.value;
-        const name = e.target.name; // 'tipoRequerimiento', 'prioridad', 'estado'
+        const name = e.target.name;
     
         let updatedFilter = { ...filter };
     
         if (value === "Todos") {
-            updatedFilter[name] = []; // Eliminar filtro de esta categoría
+            updatedFilter[name] = [];
         } else {
             if (!filter[name].includes(value)) {
                 updatedFilter[name] = [...filter[name], value];
@@ -94,9 +84,21 @@ function RequestTable() {
         }
     
         setFilter(updatedFilter);
-        const updatedSolicitudes = filterSolicitudes(updatedFilter); // Aplicar los filtros actualizados
+        const updatedSolicitudes = filterSolicitudes(updatedFilter);
         setFilteredSolicitudes(updatedSolicitudes);
         
+        if (name === 'tipoRequerimiento') {
+            const id = requerimientoTipos.find(tipoRequerimiento => tipoRequerimiento.value === value).id;
+            getCategoriaRequerimientos(authToken, id)
+            .then(res => res.json())
+            .then(data => {
+                const mappedArr = data.data.map(categoria => {
+                    return { value: categoria.descripcion, text: categoria.descripcion, id: categoria.id };
+                });
+                console.log(mappedArr);
+                setRequerimientoCategorias([ ...mappedArr ]);
+            });
+        }
     };
 
     const removeFilter = (tipo, filterName) => {
@@ -128,28 +130,6 @@ function RequestTable() {
         });
     };
 
-    const styles = {
-        tagContainer: {
-            color: '#FFFFFF',
-            minHeight: "50px"
-        },
-        tag: {
-            padding: '8px 12px',
-            backgroundColor: '#475BEB',
-            color: '#FFFFFF',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '14px',
-            margin: '5px'       // Add margin around tags
-        },
-        removeTag: {
-            marginLeft: '8px',
-            cursor: 'pointer',
-            color: '#FFFFFF'      // Make the X visible
-        }
-    }
-
     return (
         <div className="container d-flex mt-2  gap-2 flex-column justify-content-start align-items-center vh-100 vw-auto">
             <div class="container row">
@@ -158,24 +138,20 @@ function RequestTable() {
                 </div>
                 <div class="container col-9 row gap-3  ">
                     <div class="col">
-                        <SelectBox handleChange={changeFilter} name={'tipoRequerimiento'} label="Tipo" options={[
-                            { value: 'Todos', text: 'Todos' },
-                            { value: 'REH', text: 'Requerimiento Hardware' },
-                            { value: 'ERR', text: 'Errores' },
-                            { value: 'GS', text: 'Gestión Operativa' }
-                        ]} />
+                        <Filter handleChange={changeFilter} name={'tipoRequerimiento'} label="Tipo" options={requerimientoTipos} />
                     </div>
                     <div class="col">
-                        <SelectBox handleChange={changeFilter} name={'estado'} label="Estado" options={[
-                            { value: 'Todos', text: 'Todos' },
+                        <Filter handleChange={changeFilter} name={'categoriaRequerimiento'} label="Categoria" options={requerimientoCategorias} />
+                    </div>
+                    <div class="col">
+                        <Filter handleChange={changeFilter} name={'estado'} label="Estado" options={[
                             { value: 'Abierto', text: 'Abierto' },
                             { value: 'Cerrado', text: 'Cerrado' },
-                            { value: 'Pendiente', text: 'Pendiente' }
+                            { value: 'Asignado', text: 'Asignado' }
                         ]} />
                     </div>
                     <div class="col">
-                        <SelectBox handleChange={changeFilter} name={'prioridad'} label="Prioridad" options={[
-                            { value: 'Todos', text: 'Todos' },
+                        <Filter handleChange={changeFilter} name={'prioridad'} label="Prioridad" options={[
                             { value: 'Baja', text: 'Baja' },
                             { value: 'Media', text: 'Media' },
                             { value: 'Alta', text: 'Alta' },
@@ -188,6 +164,7 @@ function RequestTable() {
 
                 {showTags(filter.prioridad, "prioridad")}
                 {showTags(filter.tipoRequerimiento, "tipoRequerimiento")}
+                {showTags(filter.categoriaRequerimiento, "categoriaRequerimiento")}
                 {showTags(filter.estado, "estado")}
                 
             </div>
@@ -197,6 +174,28 @@ function RequestTable() {
             { show && <NewRequestModal show={show} setShow={setShow} />}
         </div>   
     );
+}
+
+const styles = {
+    tagContainer: {
+        color: '#FFFFFF',
+        minHeight: "50px"
+    },
+    tag: {
+        padding: '8px 12px',
+        backgroundColor: '#475BEB',
+        color: '#FFFFFF',
+        borderRadius: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: '14px',
+        margin: '5px'
+    },
+    removeTag: {
+        marginLeft: '8px',
+        cursor: 'pointer',
+        color: '#FFFFFF'
+    }
 }
 
 export default RequestTable;

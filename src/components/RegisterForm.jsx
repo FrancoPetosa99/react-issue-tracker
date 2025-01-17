@@ -3,8 +3,11 @@ import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useState } from 'react';
 import Toast from '../utils/Toast';
+import register from '../services/register';
 
 function RegisterForm() {
+
+    const [ loading, setLoading ] = useState(false);
     
     const [ formData, setFormData ] = useState({
         nombre: '',
@@ -18,16 +21,14 @@ function RegisterForm() {
         confirmPassword: '',
         destacado: true
     });
-    const [ loading, setLoading ] = useState(false);
 
     const handleSubmit = (e)=> {
+
         e.preventDefault();
+
         setLoading(true);
-        fetch('http://localhost:8080' + '/api/auth/register', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData) 
-        })
+        
+        register(formData)
         .then((res) => res.json())
         .then((data) => {
             console.log(data);
@@ -44,37 +45,6 @@ function RegisterForm() {
             [name]: value,
         });
     };
-
-    const formStyle = {
-        backgroundColor: "white",
-        padding: "2.5rem",
-        borderRadius: "25px",
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-        width: "100%",
-        maxWidth: "500px"
-    }
-
-    const inputStyle = {
-        padding: "0.5rem",
-        marginBottom: "0.1  rem",
-        borderRadius: "12px",
-        border: "1px solid #e0e0e0",
-        backgroundColor: "#fff",
-        fontSize: "0.7rem"
-    }
-
-    const buttonStyle = {
-        width: "100%",
-        padding: "0.8rem",
-        borderRadius: "12px",
-        backgroundColor: "#030D59",
-        border: "none",
-        color: "white",
-        fontWeight: "500",
-        marginTop: "1rem",
-        fontSize: "0.9rem"
-        
-    }
 
     return (
         
@@ -210,6 +180,36 @@ function RegisterForm() {
         </form>
 
     );
+}
+
+const formStyle = {
+    backgroundColor: "white",
+    padding: "2.5rem",
+    borderRadius: "25px",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+    width: "100%",
+    maxWidth: "500px"
+}
+
+const inputStyle = {
+    padding: "0.5rem",
+    marginBottom: "0.1  rem",
+    borderRadius: "12px",
+    border: "1px solid #e0e0e0",
+    backgroundColor: "#fff",
+    fontSize: "0.7rem"
+}
+
+const buttonStyle = {
+    width: "100%",
+    padding: "0.8rem",
+    borderRadius: "12px",
+    backgroundColor: "#030D59",
+    border: "none",
+    color: "white",
+    fontWeight: "500",
+    marginTop: "1rem",
+    fontSize: "0.9rem" 
 }
 
 export default RegisterForm;

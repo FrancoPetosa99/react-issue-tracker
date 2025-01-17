@@ -1,36 +1,71 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useContext, useState } from 'react';
-import SelectBox from './SelectBox';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
+import DropdownList from './DropdownList';
+import getTipoRequerimientos from '../services/getTipoRequerimientos';
+import getCategoriaRequerimientos from '../services/getCategoriaRequerimientos';
 
 function NewRequestModal({ setShow }) {
     
     const [ loading, setLoading ] = useState(false);
+    const [requerimientoTipos, setRequerimientoTipos] = useState([]);
+    const [requerimientoCategorias, setRequerimientoCategorias] = useState([]);
     const [ formData, setFormData ] = useState({
         descripcion: '',
         asunto: '',
-        prioridad: 'Baja',
-        estado: 'Abierto',
-        tipoRequerimientoId: 1
+        prioridad: '',
+        estado: '',
+        tipoRequerimientoId: null
     });
 
     const { authToken } = useContext(AuthContext);
+
+    useEffect(() => {
+
+        setLoading(true);
+
+        getTipoRequerimientos(authToken)
+        .then((res) => res.json())
+        .then((data) => {
+            const mappedArr = data.data.map(tipoRequerimiento => {
+                return { value: tipoRequerimiento.id, text: tipoRequerimiento.descripcion, id: tipoRequerimiento.id };
+            });
+            setRequerimientoTipos([ ...mappedArr ]);
+        })
+        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
+        .finally(()=> setLoading(false));
+
+    }, []);
     
     const handleClose = () => setShow(false);
 
 
     const handleChange = (e) => {
+
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
+
+        if (name === 'tipoRequerimientoId') {
+            getCategoriaRequerimientos(authToken, value)
+            .then(res => res.json())
+            .then(data => {
+                const mappedArr = data.data.map(categoria => {
+                    return { value: categoria.id, text: categoria.descripcion };
+                });
+                console.log(mappedArr);
+                setRequerimientoCategorias([ ...mappedArr ]);
+            });
+        }
     };
 
     const handleSubmit = ()=> {
         setLoading(true);
+        console.log(formData);
         fetch('http://localhost:8080' + '/api/requerimientos/', { 
             method: 'POST',
             headers: { 
@@ -48,7 +83,6 @@ function NewRequestModal({ setShow }) {
         .then(()=>{setShow(false)})
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
         .finally(()=> setLoading(false));
-        
     };
 
     return (
@@ -57,7 +91,7 @@ function NewRequestModal({ setShow }) {
             tabIndex="-1"
             style={{
                 display: 'block',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}
             role="dialog"
             aria-labelledby="newRequestModalLabel"
@@ -65,7 +99,7 @@ function NewRequestModal({ setShow }) {
         >
             <div className="modal-dialog modal-dialog-scrollable modal-lg">
                 <div className="modal-content gap-5" style={{ padding: '0.5rem' }}>
-                    {/* Header */}
+                   
                     <div
                         className="modal-header text-white"
                         style={{ backgroundColor: 'green' }}
@@ -79,25 +113,23 @@ function NewRequestModal({ setShow }) {
                         ></button>
                     </div>
 
-                    {/* Body */}
                     <div className="modal-body">
                         <div className="container row">
                             <div className="col">
-                                <SelectBox handleChange={handleChange} name={'tipoRequerimientoId'} label="Tipo" options={[
-                                    { value: 1, text: 'Requerimiento Hardware' },
-                                    { value: 2, text: 'Errores' },
-                                    { value: 3, text: 'Gestión Operativa' }
-                                ]} />
+                                <DropdownList handleChange={handleChange} name={'tipoRequerimientoId'} label="Tipo Requerimiento" options={requerimientoTipos} />
                             </div>
                             <div className="col">
-                                <SelectBox handleChange={handleChange} name={'estado'} label="Estado" options={[
+                                <DropdownList handleChange={handleChange} name={'categoriaRequerimientoId'} label="Categoria" options={requerimientoCategorias} />
+                            </div>
+                            <div className="col">
+                                <DropdownList handleChange={handleChange} name={'estado'} label="Estado" options={[
                                     { value: 'Abierto', text: 'Abierto' },
                                     { value: 'Cerrado', text: 'Cerrado' },
-                                    { value: 'Pendiente', text: 'Pendiente' }
+                                    { value: 'Asignado', text: 'Asignado' }
                                 ]} />
                             </div>
                             <div className="col">
-                                <SelectBox handleChange={handleChange} name={'prioridad'} label="Prioridad" options={[
+                                <DropdownList handleChange={handleChange} name={'prioridad'} label="Prioridad" options={[
                                     { value: 'Baja', text: 'Baja' },
                                     { value: 'Media', text: 'Media' },
                                     { value: 'Alta', text: 'Alta' },
@@ -106,13 +138,7 @@ function NewRequestModal({ setShow }) {
                             </div>
                         </div>
                         <div className="container col mt-3">
-                            <div className="input-group mb-3">
-                                <input
-                                    type="file"
-                                    className="form-control"
-                                    id="inputGroupFile01"
-                                />
-                            </div>
+                            
                             <div className="input-group mb-3">
                                 <span className="input-group-text" id="basic-addon1">
                                     Asunto
@@ -128,7 +154,8 @@ function NewRequestModal({ setShow }) {
                                     aria-describedby="basic-addon1"
                                 />
                             </div>
-                            <div className="input-group">
+
+                            <div className="input-group mb-3">
                                 <span className="input-group-text">Descripción</span>
                                 <textarea
                                     className="form-control"
@@ -139,10 +166,18 @@ function NewRequestModal({ setShow }) {
                                     aria-label="Descripción"
                                 ></textarea>
                             </div>
+
+                            <div className="input-group mb-3">
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="inputGroupFile01"
+                                />
+                            </div>
+                            
                         </div>
                     </div>
 
-                    {/* Footer */}
                     <div className="modal-footer">
                         <button
                             type="button"

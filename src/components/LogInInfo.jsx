@@ -5,20 +5,6 @@ import React from 'react';
 
 function LogInInfo() {
 
-    const stylesLogo = {
-        width: "200px",
-        height: "auto", // fixed typo
-        filter: "drop-shadow(7px 7px 15px rgba(0, 0, 0, 0.3))"
-    }
-
-    const stylesText = {
-        color: "#030D59",
-        background: "white",
-        padding: "0.5rem",
-        borderRadius: "8px",
-        boxShadow:  "drop-shadow(7px 7px 15px rgba(0, 0, 0, 0.3))"
-    }
-
     return (
         <div className='container d-flex flex-column justify-content-center p-5 w-40 align-items-start m-5'>
             <img 
@@ -33,6 +19,20 @@ function LogInInfo() {
             </div>
         </div>
     );
+}
+
+const stylesLogo = {
+    width: "200px",
+    height: "auto",
+    filter: "drop-shadow(7px 7px 15px rgba(0, 0, 0, 0.3))"
+}
+
+const stylesText = {
+    color: "#030D59",
+    background: "white",
+    padding: "0.5rem",
+    borderRadius: "8px",
+    boxShadow:  "drop-shadow(7px 7px 15px rgba(0, 0, 0, 0.3))"
 }
 
 export default LogInInfo;

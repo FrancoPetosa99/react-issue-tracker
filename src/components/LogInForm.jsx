@@ -2,16 +2,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useContext, useState } from 'react';
-import Toast from '../utils/Toast';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Toast from '../utils/Toast';
+import login from '../services/login';
 
 function LogInForm() {
 
-    const [ formData, setFormData ] = useState({
-        email: '',
-        password: ''
-    });
+    const [ formData, setFormData ] = useState({ email: '', password: '' });
 
     const [ loading, setLoading ] = useState(false);
 
@@ -19,44 +17,13 @@ function LogInForm() {
 
     const { setIsAuthenticated, setAuthToken } = useContext(AuthContext);
 
-
-    const formStyle = {
-        backgroundColor: "white",
-        padding: "2.5rem",
-        borderRadius: "25px",
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-        width: "100%",
-        maxWidth: "500px"
-    }
-
-    const inputStyle = {
-        padding: "0.8rem",
-        marginBottom: "1rem",
-        borderRadius: "12px",
-        border: "1px solid #e0e0e0",
-        backgroundColor: "#f8f9fa",
-        fontSize: "0.9rem"
-    }
-
-    const buttonStyle = {
-        width: "100%",
-        padding: "0.8rem",
-        borderRadius: "12px",
-        backgroundColor: "#030D59",
-        border: "none",
-        color: "white",
-        fontWeight: "500",
-        marginTop: "1rem"
-    }
-
     const handleSubmit = (e)=> {
+
         e.preventDefault();
+
         setLoading(true);
-        fetch('http://localhost:8080' + '/api/auth/login', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData) 
-        })
+
+       login(formData)
         .then((res) => res.json())
         .then((data) => {
             console.log(data);
@@ -66,7 +33,7 @@ function LogInForm() {
             setIsAuthenticated(true);
             setAuthToken(data.data);
             Toast({ icon: 'success', title: 'Bienvenido', text: 'Inicio de sesión exitoso' });
-            navegate('/')
+            navegate('/');
         })
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' +  e.message }))
         .finally(()=> setLoading(false));
@@ -133,6 +100,35 @@ function LogInForm() {
             </div>
         </form>
     );
+}
+
+const formStyle = {
+    backgroundColor: "white",
+    padding: "2.5rem",
+    borderRadius: "25px",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+    width: "100%",
+    maxWidth: "500px"
+}
+
+const inputStyle = {
+    padding: "0.8rem",
+    marginBottom: "1rem",
+    borderRadius: "12px",
+    border: "1px solid #e0e0e0",
+    backgroundColor: "#f8f9fa",
+    fontSize: "0.9rem"
+}
+
+const buttonStyle = {
+    width: "100%",
+    padding: "0.8rem",
+    borderRadius: "12px",
+    backgroundColor: "#030D59",
+    border: "none",
+    color: "white",
+    fontWeight: "500",
+    marginTop: "1rem"
 }
 
 export default LogInForm;
