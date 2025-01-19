@@ -3,9 +3,15 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
-import DropdownList from './DropdownList';
+import DropdownList from '../inputs/DropDownList';
 import getTipoRequerimientos from '../services/getTipoRequerimientos';
 import getCategoriaRequerimientos from '../services/getCategoriaRequerimientos';
+import createNewRequerimiento from '../services/createNewRequerimiento';
+import CustomInput from '../inputs/CustomInput';
+import TipoRequerimientoSelect from './forms/requerimiento/TipoRequerimientoSelect';
+import CategoriaRequerimientoSelect from './forms/requerimiento/CategoriaRequerimientoSelect';
+import PrioridadRequerimientoSelect from './forms/requerimiento/PrioridadRequerimientoSelect';
+import RequerimientosRelacionadosSelect from './forms/requerimiento/RequerimientosRelacionadosSelect';
 
 function NewRequestModal({ setShow }) {
     
@@ -16,71 +22,34 @@ function NewRequestModal({ setShow }) {
         descripcion: '',
         asunto: '',
         prioridad: '',
-        estado: '',
-        tipoRequerimientoId: null
+        estado: 'Abierto',
+        tipoRequerimientoId: null,
+        listaRequerimientosId: [],
+        listaArchivos: []
     });
 
     const { authToken } = useContext(AuthContext);
 
-    useEffect(() => {
-
-        setLoading(true);
-
-        getTipoRequerimientos(authToken)
-        .then((res) => res.json())
-        .then((data) => {
-            const mappedArr = data.data.map(tipoRequerimiento => {
-                return { value: tipoRequerimiento.id, text: tipoRequerimiento.descripcion, id: tipoRequerimiento.id };
-            });
-            setRequerimientoTipos([ ...mappedArr ]);
-        })
-        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
-        .finally(()=> setLoading(false));
-
-    }, []);
-    
     const handleClose = () => setShow(false);
 
-
     const handleChange = (e) => {
-
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
-
-        if (name === 'tipoRequerimientoId') {
-            getCategoriaRequerimientos(authToken, value)
-            .then(res => res.json())
-            .then(data => {
-                const mappedArr = data.data.map(categoria => {
-                    return { value: categoria.id, text: categoria.descripcion };
-                });
-                console.log(mappedArr);
-                setRequerimientoCategorias([ ...mappedArr ]);
-            });
-        }
     };
 
     const handleSubmit = ()=> {
         setLoading(true);
         console.log(formData);
-        fetch('http://localhost:8080' + '/api/requerimientos/', { 
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + authToken
-            },
-            body: JSON.stringify(formData) 
-        })
-        .then((res) => res.json())
+        createNewRequerimiento(authToken, formData)
         .then((data) => {
             console.log(data);
             if (data.status !== 'Success') throw new Error(data.message);
             Toast({ icon: 'success', title: 'Requerimiento Creado' });
         })
-        .then(()=>{setShow(false)})
+        .then(()=> setTimeout(()=> setShow(false), 1000))
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
         .finally(()=> setLoading(false));
     };
@@ -116,57 +85,57 @@ function NewRequestModal({ setShow }) {
                     <div className="modal-body">
                         <div className="container row">
                             <div className="col">
-                                <DropdownList handleChange={handleChange} name={'tipoRequerimientoId'} label="Tipo Requerimiento" options={requerimientoTipos} />
+                                <TipoRequerimientoSelect 
+                                    formData={formData} 
+                                    setFormData={setFormData} 
+                                />
                             </div>
                             <div className="col">
-                                <DropdownList handleChange={handleChange} name={'categoriaRequerimientoId'} label="Categoria" options={requerimientoCategorias} />
+                                <CategoriaRequerimientoSelect 
+                                    formData={formData} 
+                                    setFormData={setFormData}
+                                />
                             </div>
                             <div className="col">
-                                <DropdownList handleChange={handleChange} name={'estado'} label="Estado" options={[
-                                    { value: 'Abierto', text: 'Abierto' },
-                                    { value: 'Cerrado', text: 'Cerrado' },
-                                    { value: 'Asignado', text: 'Asignado' }
-                                ]} />
-                            </div>
-                            <div className="col">
-                                <DropdownList handleChange={handleChange} name={'prioridad'} label="Prioridad" options={[
-                                    { value: 'Baja', text: 'Baja' },
-                                    { value: 'Media', text: 'Media' },
-                                    { value: 'Alta', text: 'Alta' },
-                                    { value: 'Urgente', text: 'Urgente' }
-                                ]} />
+                                <PrioridadRequerimientoSelect 
+                                    formData={formData} 
+                                    setFormData={setFormData}
+                                />
                             </div>
                         </div>
                         <div className="container col mt-3">
                             
                             <div className="input-group mb-3">
-                                <span className="input-group-text" id="basic-addon1">
-                                    Asunto
-                                </span>
-                                <input
-                                    type="text"
-                                    name='asunto'
-                                    onChange={handleChange}
+                                <CustomInput
+                                    name={'asunto'}
+                                    type={'text'}
+                                    label={'Asunto'}
+                                    handleChange={handleChange}
                                     value={formData.asunto}
-                                    className="form-control"
-                                    placeholder="Ingrese el asunto"
-                                    aria-label="Asunto"
-                                    aria-describedby="basic-addon1"
+                                    showError={null}
+                                    required={true}
                                 />
                             </div>
 
                             <div className="input-group mb-3">
-                                <span className="input-group-text">Descripción</span>
-                                <textarea
-                                    className="form-control"
-                                    type="text"
-                                    name='descripcion'
-                                    onChange={handleChange}
+                                <CustomInput
+                                    name={'descripcion'}
+                                    type={'textarea'}
+                                    label={'Descripcion'}
+                                    handleChange={handleChange}
                                     value={formData.descripcion}
-                                    aria-label="Descripción"
-                                ></textarea>
+                                    showError={null}
+                                    required={true}
+                                />
                             </div>
 
+                            <div className="input-group mb-3">
+                                <RequerimientosRelacionadosSelect
+                                    formData={formData} 
+                                    setFormData={setFormData}
+                                />
+                            </div>
+                            
                             <div className="input-group mb-3">
                                 <input
                                     type="file"

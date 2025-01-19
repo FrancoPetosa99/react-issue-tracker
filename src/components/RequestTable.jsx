@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, {useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Table from './Table';
 import NewRequestModal from './NewRequestModal';
 import { AuthContext } from '../context/AuthContext';
@@ -27,7 +27,6 @@ function RequestTable() {
         setLoading(true);
         
         getRequerimientos(authToken)
-        .then((res) => res.json())
         .then((data) => {
             console.log(data);
             if (data.status !== 'Success') throw new Error(data.message);
@@ -38,7 +37,6 @@ function RequestTable() {
         .finally(()=> setLoading(false));
 
         getTipoRequerimientos(authToken)
-        .then((res) => res.json())
         .then((data) => {
             const mappedArr = data.data.map(tipoRequerimiento => {
                 return { value: tipoRequerimiento.codigo, text: tipoRequerimiento.descripcion, id: tipoRequerimiento.id };
@@ -90,12 +88,10 @@ function RequestTable() {
         if (name === 'tipoRequerimiento') {
             const id = requerimientoTipos.find(tipoRequerimiento => tipoRequerimiento.value === value).id;
             getCategoriaRequerimientos(authToken, id)
-            .then(res => res.json())
             .then(data => {
                 const mappedArr = data.data.map(categoria => {
                     return { value: categoria.descripcion, text: categoria.descripcion, id: categoria.id };
                 });
-                console.log(mappedArr);
                 setRequerimientoCategorias([ ...mappedArr ]);
             });
         }

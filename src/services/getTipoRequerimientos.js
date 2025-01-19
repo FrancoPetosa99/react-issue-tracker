@@ -7,7 +7,8 @@ function getTipoRequerimientos(authToken) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         }
-    });
+    })
+    .then(res => res.json());
 };
 
 export default getTipoRequerimientos;

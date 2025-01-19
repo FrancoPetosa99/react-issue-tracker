@@ -7,7 +7,8 @@ function getCategoriaRequerimientos(authToken, tipoRequerimientoId) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         }
-    });
+    })
+    .then(res => res.json());
 };
 
 export default getCategoriaRequerimientos;

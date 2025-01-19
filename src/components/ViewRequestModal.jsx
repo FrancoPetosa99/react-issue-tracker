@@ -10,18 +10,10 @@ function ViewRequestModal({ setShow, solicitud }) {
 
     const getPriorityColor = (priority) => {
         const styles = {
-            'Urgente': {
-                backgroundColor: '#900000' // Darkest/most intense red
-            },
-            'Alta': {
-                backgroundColor: '#dc3545' // Bright red
-            },
-            'Media': {
-                backgroundColor: '#ff6b6b' // Medium red
-            },
-            'Baja': {
-                backgroundColor: '#ffb4b4' // Light red
-            }
+            'Urgente': { backgroundColor: '#900000' },
+            'Alta': { backgroundColor: '#dc3545' },
+            'Media': { backgroundColor: '#ff6b6b' },
+            'Baja': { backgroundColor: '#ffb4b4' }
         };
 
         return styles[priority] || { backgroundColor: '#dc3545' };
@@ -29,14 +21,12 @@ function ViewRequestModal({ setShow, solicitud }) {
 
     return (
         <>
-            {/* Fondo del modal */}
             <div className="modal-backdrop fade show"></div>
-            
-            {/* Modal principal */}
+
             <div className="modal fade show" tabIndex="-1" style={{ display: 'block' }} role="dialog">
                 <div className="modal-dialog modal-dialog-scrollable modal-lg">
                     <div className="modal-content gap-3">
-                        {/* Header */}
+                     
                         <div
                             className="modal-header text-white"
                             style={getPriorityColor(solicitud.prioridad)}
@@ -53,7 +43,6 @@ function ViewRequestModal({ setShow, solicitud }) {
                             ></button>
                         </div>
 
-                        {/* Body */}
                         <div className="modal-body">
                             <div className="container">
                                 <div className="row mb-3">
@@ -97,7 +86,6 @@ function ViewRequestModal({ setShow, solicitud }) {
                             </div>
                         </div>
 
-                        {/* Footer */}
                         <div className="modal-footer">
                             <button
                                 type="button"
