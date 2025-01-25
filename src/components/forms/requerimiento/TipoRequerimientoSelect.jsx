@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import Toast from '../../../utils/Toast';
 
-function TipoRequerimientoSelect({ formData, setFormData }){
+function TipoRequerimientoSelect({ formData, setFormData, required, readOnly }){
     
     const name = 'tipoRequerimientoId';
     const label = 'Tipo Requerimiento';
@@ -37,6 +37,8 @@ function TipoRequerimientoSelect({ formData, setFormData }){
             handleChange={handleChange} 
             name={name}
             label={label}
+            required={required}
+            readOnly={readOnly}
             loadOptions={loadOptions}
             isClearable={isClearable}
             isSearchable={isSearchable}

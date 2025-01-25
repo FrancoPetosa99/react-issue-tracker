@@ -1,14 +1,14 @@
 import React from 'react';
 
-function CustomInput({ name, label, handleChange, value, showError, required, readonly }) {
-       
+function LargeInput({ name, label, handleChange, value, showError, required, readonly }) {
+
     return (
         <div className="mb-3" style={{ width: '100%' }}>
             <div style={{ width: '100%' }}>
                 <label for={name} class="form-label">{label}</label>
                 { required && <b style={requiredStyles}>*</b> }
              </div>
-            <input 
+            <textarea 
                 className={`form-control ${showError ? 'is-invalid' : ''}`} 
                 id={name} rows="4"
                 onChange={handleChange}
@@ -24,4 +24,4 @@ const requiredStyles = {
     color: 'red'
 };
 
-export default CustomInput;
+export default LargeInput;

@@ -4,10 +4,11 @@ import AsyncSelect from "react-select/async";
 function DropDownList({ 
     name,
     label,
+    required,
+    readOnly,
     isSearchable, 
     isClearable, 
     isLoading, 
-    isDisabled, 
     handleChange,
     loadOptions,
     value,
@@ -16,11 +17,14 @@ function DropDownList({
 
     return(
         <div style={styles} >
-            <label>{label}</label>
+            <div>
+                <label>{label}</label>
+                { required && <b style={requiredStyles}>*</b> }
+            </div>
             <AsyncSelect
                 className="basic-single"
                 classNamePrefix="select"
-                isDisabled={isDisabled}
+                isDisabled={readOnly}
                 isLoading={isLoading}
                 isClearable={isClearable}
                 isSearchable={isSearchable}
@@ -40,5 +44,10 @@ function DropDownList({
 const styles = {
     width: '100%'
 }
+
+const requiredStyles = {
+    fontSize: '14px', 
+    color: 'red'
+};
 
 export default DropDownList;

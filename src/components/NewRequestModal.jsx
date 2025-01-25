@@ -1,23 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
-import DropdownList from '../inputs/DropDownList';
-import getTipoRequerimientos from '../services/getTipoRequerimientos';
-import getCategoriaRequerimientos from '../services/getCategoriaRequerimientos';
 import createNewRequerimiento from '../services/createNewRequerimiento';
 import CustomInput from '../inputs/CustomInput';
 import TipoRequerimientoSelect from './forms/requerimiento/TipoRequerimientoSelect';
 import CategoriaRequerimientoSelect from './forms/requerimiento/CategoriaRequerimientoSelect';
 import PrioridadRequerimientoSelect from './forms/requerimiento/PrioridadRequerimientoSelect';
 import RequerimientosRelacionadosSelect from './forms/requerimiento/RequerimientosRelacionadosSelect';
+import LargeInput from '../inputs/LargeInput';
 
 function NewRequestModal({ setShow }) {
     
     const [ loading, setLoading ] = useState(false);
-    const [requerimientoTipos, setRequerimientoTipos] = useState([]);
-    const [requerimientoCategorias, setRequerimientoCategorias] = useState([]);
     const [ formData, setFormData ] = useState({
         descripcion: '',
         asunto: '',
@@ -87,19 +83,25 @@ function NewRequestModal({ setShow }) {
                             <div className="col">
                                 <TipoRequerimientoSelect 
                                     formData={formData} 
-                                    setFormData={setFormData} 
+                                    setFormData={setFormData}
+                                    required={true}
+                                    readOnly={false}
                                 />
                             </div>
                             <div className="col">
                                 <CategoriaRequerimientoSelect 
                                     formData={formData} 
                                     setFormData={setFormData}
+                                    required={true}
+                                    readOnly={false}
                                 />
                             </div>
                             <div className="col">
                                 <PrioridadRequerimientoSelect 
                                     formData={formData} 
                                     setFormData={setFormData}
+                                    required={true}
+                                    readOnly={false}
                                 />
                             </div>
                         </div>
@@ -118,7 +120,7 @@ function NewRequestModal({ setShow }) {
                             </div>
 
                             <div className="input-group mb-3">
-                                <CustomInput
+                                <LargeInput
                                     name={'descripcion'}
                                     type={'textarea'}
                                     label={'Descripcion'}
@@ -156,7 +158,7 @@ function NewRequestModal({ setShow }) {
                             Cerrar
                         </button>
                         <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-                            Guardar cambios
+                            Guardar
                         </button>
                     </div>
                 </div>

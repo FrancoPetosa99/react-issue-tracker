@@ -5,7 +5,7 @@ import DropDownList from '../../../inputs/DropDownList';
 import getCategoriaRequerimientos from '../../../services/getCategoriaRequerimientos';
 import Toast from '../../../utils/Toast';
 
-function CategoriaRequerimientoSelect({ formData, setFormData }){
+function CategoriaRequerimientoSelect({ formData, setFormData, required, readOnly }){
 
     const name = 'categoriaRequerimientoId';
     const label = 'Categoría Requerimiento';
@@ -38,6 +38,8 @@ function CategoriaRequerimientoSelect({ formData, setFormData }){
             handleChange={handleChange} 
             name={name}
             label={label}
+            required={required}
+            readOnly={readOnly}
             loadOptions={loadOptions}
             isClearable={isClearable}
             isSearchable={isSearchable}

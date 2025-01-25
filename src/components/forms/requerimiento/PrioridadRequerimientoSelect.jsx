@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DropDownList from '../../../inputs/DropDownList';
 
-function PrioridadRequerimientoSelect({ formData, setFormData }){
+function PrioridadRequerimientoSelect({ formData, setFormData, required, readOnly }){
     
     const name = 'prioridad';
     const label = 'Prioridad';
@@ -32,6 +32,8 @@ function PrioridadRequerimientoSelect({ formData, setFormData }){
             handleChange={handleChange} 
             name={name} 
             label={label}
+            required={required}
+            readOnly={readOnly}
             loadOptions={loadOptions}
             isClearable={isClearable}
             isSearchable={isSearchable}
