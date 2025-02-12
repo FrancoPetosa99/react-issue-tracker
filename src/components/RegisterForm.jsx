@@ -4,6 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useState } from 'react';
 import Toast from '../utils/Toast';
 import register from '../services/register';
+import EmpresasSelect from './forms/requerimiento/EmpresasSelect';
 
 function RegisterForm() {
 
@@ -14,7 +15,7 @@ function RegisterForm() {
         apellido: '',
         email: '',
         nombreUsuario: '',
-        empresa: '',
+        empresaId: '',
         descripcion: '',
         cuil: '',
         password: '',
@@ -27,7 +28,7 @@ function RegisterForm() {
         e.preventDefault();
 
         setLoading(true);
-        
+
         register(formData)
         .then((res) => res.json())
         .then((data) => {
@@ -57,6 +58,7 @@ function RegisterForm() {
             </div>
             
             <div className="d-flex gap-2 mb-3">
+
                 <input 
                     type="text" 
                     className="form-control" 
@@ -66,6 +68,7 @@ function RegisterForm() {
                     value={formData.nombre}
                     onChange={handleChange}
                 />
+
                 <input 
                     type="text" 
                     className="form-control" 
@@ -78,6 +81,7 @@ function RegisterForm() {
             </div>
 
             <div className="d-flex gap-2 mb-3">
+
                 <input 
                     type="email" 
                     className="form-control" 
@@ -101,6 +105,7 @@ function RegisterForm() {
             </div>
 
             <div className="mb-3">
+
                 <input 
                     type="text" 
                     className="form-control" 
@@ -110,18 +115,13 @@ function RegisterForm() {
                     value={formData.descripcion}
                     onChange={handleChange}
                 />
+
             </div>
 
             <div className="d-flex gap-3 mb-3">
-                <input 
-                    type="text" 
-                    className="form-control" 
-                    style={inputStyle}
-                    placeholder="Empresa"
-                    name='empresa'
-                    value={formData.empresa}
-                    onChange={handleChange}
-                />
+
+                <EmpresasSelect formData={formData} setFormData={setFormData} />
+
                 <input 
                     type="text" 
                     className="form-control" 
@@ -131,6 +131,7 @@ function RegisterForm() {
                     value={formData.cuil}
                     onChange={handleChange}
                 />
+
             </div>
 
             <div className="d-flex gap-2 mb-3">

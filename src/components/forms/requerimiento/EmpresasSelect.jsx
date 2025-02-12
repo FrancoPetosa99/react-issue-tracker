@@ -1,27 +1,26 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useContext } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
 import DropDownList from '../../../inputs/DropDownList';
-import getCategoriaRequerimientos from '../../../services/getCategoriaRequerimientos';
 import Toast from '../../../utils/Toast';
+import getEmpresas from '../../../services/getEmpresas';
 
-function CategoriaRequerimientoSelect({ formData, setFormData, required, readOnly }){
+function EmpresasSelect({ formData, setFormData }){
 
-    const name = 'categoriaRequerimientoId';
-    const label = 'Categoría Requerimiento';
+    const name = 'empresaId';
+    const label = 'Empresa';
     const isSearchable = false;
     const isClearable = true;
-    
-    const { authToken } = useContext(AuthContext);
 
     const loadOptions = (searchValue, callback) => {
-        
-        getCategoriaRequerimientos(authToken)
+    
+        getEmpresas()
         .then((data) => {
-            const mappedArr = data.data.map(categoria => {
-                return { value: categoria.id, label: categoria.descripcion, id: categoria.id };
+
+            const mappedArr = data.data.map(empresa => {
+                return { value: empresa.id, label: empresa.nombre, id: empresa.id };
             });
+            
             callback(mappedArr);
+
         })
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }));
     };
@@ -38,8 +37,8 @@ function CategoriaRequerimientoSelect({ formData, setFormData, required, readOnl
             handleChange={handleChange} 
             name={name}
             label={label}
-            required={required}
-            readOnly={readOnly}
+            required={true}
+            readOnly={false}
             loadOptions={loadOptions}
             isClearable={isClearable}
             isSearchable={isSearchable}
@@ -48,4 +47,4 @@ function CategoriaRequerimientoSelect({ formData, setFormData, required, readOnl
     );
 };
 
-export default CategoriaRequerimientoSelect;
+export default EmpresasSelect;

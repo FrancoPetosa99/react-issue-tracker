@@ -10,6 +10,8 @@ import CategoriaRequerimientoSelect from './forms/requerimiento/CategoriaRequeri
 import PrioridadRequerimientoSelect from './forms/requerimiento/PrioridadRequerimientoSelect';
 import RequerimientosRelacionadosSelect from './forms/requerimiento/RequerimientosRelacionadosSelect';
 import LargeInput from '../inputs/LargeInput';
+import BtnSave from './btns/BtnSave';
+import BtnCancel from './btns/BtnCancel';
 
 function NewRequestModal({ setShow }) {
     
@@ -114,7 +116,7 @@ function NewRequestModal({ setShow }) {
                                     label={'Asunto'}
                                     handleChange={handleChange}
                                     value={formData.asunto}
-                                    showError={null}
+                                    showError={false}
                                     required={true}
                                 />
                             </div>
@@ -149,17 +151,9 @@ function NewRequestModal({ setShow }) {
                         </div>
                     </div>
 
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={handleClose}
-                        >
-                            Cerrar
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-                            Guardar
-                        </button>
+                    <div style={{ display: 'flex', flexWrap: 'nowrap' }} className="modal-footer">
+                        <BtnCancel action={handleClose} />
+                        <BtnSave action={handleSubmit} loading={loading} />
                     </div>
                 </div>
             </div>

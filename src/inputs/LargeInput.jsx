@@ -10,7 +10,9 @@ function LargeInput({ name, label, handleChange, value, showError, required, rea
              </div>
             <textarea 
                 className={`form-control ${showError ? 'is-invalid' : ''}`} 
-                id={name} rows="4"
+                id={name}
+                name={name}
+                rows="4"
                 onChange={handleChange}
                 value={value}
                 disabled={readonly}

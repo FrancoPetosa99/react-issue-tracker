@@ -10,7 +10,8 @@ function CustomInput({ name, label, handleChange, value, showError, required, re
              </div>
             <input 
                 className={`form-control ${showError ? 'is-invalid' : ''}`} 
-                id={name} rows="4"
+                id={name}
+                name={name}
                 onChange={handleChange}
                 value={value}
                 disabled={readonly}
