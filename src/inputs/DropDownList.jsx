@@ -12,15 +12,17 @@ function DropDownList({
     handleChange,
     loadOptions,
     value,
-    isMulti
+    isMulti,
+    showError, 
+    errorMessage
 }) {
 
     return(
         <div style={styles} >
-            <div>
-                <label>{label}</label>
+            <div style={{ width: '100%' }}>
+                <label htmlFor={name} className="form-label">{label}</label>
                 { required && <b style={requiredStyles}>*</b> }
-            </div>
+             </div>
             <AsyncSelect
                 className="basic-single"
                 classNamePrefix="select"
@@ -29,6 +31,7 @@ function DropDownList({
                 isClearable={isClearable}
                 isSearchable={isSearchable}
                 name={name}
+                id={name}
                 loadOptions={loadOptions}
                 value={value}
                 onChange={(selectedOption) => handleChange(selectedOption)}
@@ -36,18 +39,37 @@ function DropDownList({
                 placeholder="Seleccionar..."
                 noOptionsMessage={() => "No hay opciones disponibles"}
                 isMulti={isMulti}
+                styles={{
+                    control: (styles) => {
+            
+                        if (showError) {
+                            return {
+                                ... styles,
+                                borderColor: '#dc3545'
+                            }
+                        }
+
+                        return styles;
+                    }
+                }}
             />
+            { showError && <b style={errorMessageStyles}> { errorMessage } </b> }
         </div>
     );
 }
 
 const styles = {
     width: '100%'
-}
+};
 
 const requiredStyles = {
     fontSize: '14px', 
     color: 'red'
+};
+
+const errorMessageStyles = {
+    fontSize: '12px', 
+    color: '#dc3545'
 };
 
 export default DropDownList;

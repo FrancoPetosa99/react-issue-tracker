@@ -12,10 +12,13 @@ import Toast from '../utils/Toast';
 function SideBar() {
 
     const navegate = useNavigate();
+
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     const logout = (event) => {
+
         event.preventDefault();
+        
         ConfirmModal(() => {
             localStorage.setItem("isAuthenticated", "false");
             localStorage.setItem("authToken", null);
@@ -27,57 +30,8 @@ function SideBar() {
         });
       };
     
-    const stylesNav = {
-        height: '100vh',
-        width: '100%',
-        background: 'linear-gradient(to bottom, #475BEB, #030D59)',
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: "center",
-        fontSize: "1.2rem",
-        flexDirection: 'column',
-        overflowY: 'auto',
-        padding: "1rem"
-    };
-
-    const stylesLogo = {
-        height: 'auto',
-        width: '100px',
-    };
-
-    const navTextLink = {
-        color: 'white'
-    };
-
-    const navItemStyles = {
-        display: 'flex',
-        justifyContent: 'left',
-        width: '100%',
-        marginLeft: "4vw",
-        alignItems: "center",
-        color: 'white',
-        gap: '2vw'
-    };
-
-    const navTextButton = {
-        color: 'white',
-        background: "transparent",
-        border: "none"
-    }
-
-    const navItemsLayoutStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        gap: "1rem"
-    };
-
-    const navIcon = {
-        marginRight: "1rem"
-    }
-
-    return (
+      
+      return (
         <nav style={stylesNav} className="navbar navbar-dark"> 
             <Link to="/">
                 <img style={stylesLogo} src="./src/public/logo.webp" alt="Logo" />
@@ -91,6 +45,10 @@ function SideBar() {
                 <li style={navItemStyles}>
                     
                     <Link style={navTextLink} className="nav-link" to="/"><i style={navIcon} className="bi bi-grid"></i>Mis Solicitudes</Link>
+                </li>
+                <li style={navItemStyles}>
+                    
+                    <Link style={navTextLink} className="nav-link" to="/users"><i style={navIcon} className="bi bi-people"></i>Usuarios</Link>
                 </li>
                 <li style={navItemStyles}>
                     
@@ -109,13 +67,62 @@ function SideBar() {
                 )}
                 {isAuthenticated && (
                     <li style={navItemStyles}>
-                        
                         {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} logout={logout} />}
                     </li>
                 )}
             </ul>
         </nav>
     );
+}
+
+const stylesNav = {
+    height: '100vh',
+    width: '100%',
+    background: 'linear-gradient(to bottom, #475BEB, #030D59)',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: "center",
+    fontSize: "1.2rem",
+    flexDirection: 'column',
+    overflowY: 'auto',
+    padding: "1rem"
+};
+
+const stylesLogo = {
+    height: 'auto',
+    width: '100px',
+};
+
+const navTextLink = {
+    color: 'white'
+};
+
+const navItemStyles = {
+    display: 'flex',
+    justifyContent: 'left',
+    width: '100%',
+    marginLeft: "4vw",
+    alignItems: "center",
+    color: 'white',
+    gap: '2vw'
+};
+
+const navTextButton = {
+    color: 'white',
+    background: "transparent",
+    border: "none"
+}
+
+const navItemsLayoutStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    gap: "1rem"
+};
+
+const navIcon = {
+    marginRight: "1rem"
 }
 
 export default SideBar;

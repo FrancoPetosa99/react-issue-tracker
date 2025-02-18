@@ -3,7 +3,7 @@ import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useState } from 'react';
 import Toast from '../utils/Toast';
-import register from '../services/register';
+import register from '../services/registerExternalUser';
 import EmpresasSelect from './forms/requerimiento/EmpresasSelect';
 
 function RegisterForm() {

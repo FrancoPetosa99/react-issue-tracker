@@ -2,14 +2,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import Table from './Table';
 import NewRequestModal from './NewRequestModal';
-import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
 import getRequerimientos from '../services/getRequerimientos';
 import getTipoRequerimientos from '../services/getTipoRequerimientos';
 import Filter from './Filter';
 import getCategoriaRequerimientos from '../services/getCategoriaRequerimientos';
+import Spinner from './Spinner';
 
 function RequestTable() {
 
@@ -165,7 +166,8 @@ function RequestTable() {
                 
             </div>
             <div class="container d-flex mt-10 flex-column align-items-center gap-5  vh-auto justify-content-between">
-                <Table solicitudes={filteredSolicitudes} />
+                { !loading && <Table solicitudes={filteredSolicitudes} /> }
+                { loading && <Spinner size={60} /> }
             </div>
             { show && <NewRequestModal show={show} setShow={setShow} />}
         </div>   

@@ -10,6 +10,8 @@ import Admin from './pages/Admin';
 import Profile from './pages/Profile';
 import AuthProvider from './context/AuthContext';
 import NotFound from './components/NotFound';
+import RegisterExternalUser from './pages/RegisterExternalUser';
+import Users from './pages/Users';
 
 function App() {
 
@@ -18,11 +20,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Config />} />
           <Route path="/" element={<Admin />} />
+          <Route path="/register" element={<RegisterExternalUser />} />
+          <Route path="/users" element={<Users />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

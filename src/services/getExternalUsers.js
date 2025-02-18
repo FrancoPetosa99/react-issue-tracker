@@ -1,14 +1,14 @@
 import baseURL from "./baseURL";
 
-function getEmpresas(authToken) {
-    const endpoint = '/api/empresas/';
+function getExternalUsers(authToken) {
+    const endpoint = '/api/usuarios/externo';
     return fetch(baseURL() + endpoint, { 
         headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
         }
     })
-    .then(res => res.json());
+    .then((res) => res.json())
 };
 
-export default getEmpresas;
+export default getExternalUsers;

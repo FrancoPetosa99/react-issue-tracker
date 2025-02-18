@@ -2,21 +2,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DropDownList from '../../../inputs/DropDownList';
 import Toast from '../../../utils/Toast';
 import getEmpresas from '../../../services/getEmpresas';
+import { useContext } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
 
-function EmpresasSelect({ formData, setFormData }){
+const name = 'empresaId';
+const label = 'Empresa';
+const isSearchable = false;
+const isClearable = true;
 
-    const name = 'empresaId';
-    const label = 'Empresa';
-    const isSearchable = false;
-    const isClearable = true;
+function EmpresasSelect({ field, showError, errorMessage }){
+
+    const { authToken } = useContext(AuthContext);
 
     const loadOptions = (searchValue, callback) => {
     
-        getEmpresas()
+        getEmpresas(authToken)
         .then((data) => {
 
             const mappedArr = data.data.map(empresa => {
-                return { value: empresa.id, label: empresa.nombre, id: empresa.id };
+                return { 
+                    value: empresa.id, 
+                    label: empresa.nombre, 
+                    id: empresa.id 
+                };
             });
             
             callback(mappedArr);
@@ -25,25 +33,33 @@ function EmpresasSelect({ formData, setFormData }){
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }));
     };
 
-    const handleChange = ({ value }) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+    const handleChange = (selectedOption) => field.onChange(selectedOption.value);
 
     return(
-        <DropDownList
-            handleChange={handleChange} 
-            name={name}
-            label={label}
-            required={true}
-            readOnly={false}
-            loadOptions={loadOptions}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
-            isDisabled={formData.tipoRequerimientoId ? false : true}
-        />
+        <>
+            <input 
+                type={'number'}
+                name={name}
+                id={name}
+                value={field.value} 
+                style={{ display: 'none' }}
+                onChange={handleChange} 
+            />
+
+            <DropDownList
+                handleChange={handleChange} 
+                name={'empresa'}
+                label={label}
+                required={true}
+                readOnly={false}
+                loadOptions={loadOptions}
+                isClearable={isClearable}
+                isSearchable={isSearchable}
+                isDisabled={false}
+                showError={showError}
+                errorMessage={errorMessage}
+            />
+        </>
     );
 };
 
