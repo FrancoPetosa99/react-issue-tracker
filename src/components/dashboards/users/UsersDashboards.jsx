@@ -5,6 +5,7 @@ import getExternalUsers from "../../../services/getExternalUsers";
 import { AuthContext } from "../../../context/AuthContext";
 import Spinner from "../../Spinner";
 import { useNavigate } from "react-router-dom";
+import UserModal from "../../modales/UserModal";
 
 function UsersDashboards() {
 
@@ -12,9 +13,16 @@ function UsersDashboards() {
 
   const { authToken } = useContext(AuthContext);
 
-  const { columnsSchema, pageSchema, filters } = useConfig();
+  const { 
+    columnsSchema, 
+    pageSchema, 
+    filters,
+    showModal,
+    setShowModal,
+    selectedUser } = useConfig();
 
   const [ loading, setLoading ] = useState(false);
+  const [ show, setShow ] = useState(false);
   const [ users, setUsers ] = useState([ ]);
 
   useEffect(() => {
@@ -57,6 +65,8 @@ function UsersDashboards() {
       }
 
       { loading && <Spinner size={60} /> }
+
+      { showModal && <UserModal setShow={setShowModal} user={selectedUser} /> }
 
     </div>
   );

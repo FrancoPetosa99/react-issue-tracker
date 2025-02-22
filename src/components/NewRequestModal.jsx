@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 import { AuthContext } from '../context/AuthContext';
 import Toast from '../utils/Toast';
 import createNewRequerimiento from '../services/createNewRequerimiento';
@@ -12,45 +14,42 @@ import RequerimientosRelacionadosSelect from './forms/requerimiento/Requerimient
 import LargeInput from '../inputs/LargeInput';
 import BtnSave from './btns/BtnSave';
 import BtnCancel from './btns/BtnCancel';
+import FormSchema from './forms/requerimiento/FormSchema';
+import FileInput from '../inputs/FileInput'
+import UsuariosPropietariosSelect from './forms/requerimiento/UsuariosPropietariosSelect';
 
 function NewRequestModal({ setShow }) {
     
     const [ loading, setLoading ] = useState(false);
-    const [ formData, setFormData ] = useState({
-        descripcion: '',
-        asunto: '',
-        prioridad: '',
-        estado: 'Abierto',
-        tipoRequerimientoId: null,
-        listaRequerimientosId: [],
-        listaArchivos: []
-    });
 
+    const formRef = useRef(null);
+    
     const { authToken } = useContext(AuthContext);
 
     const handleClose = () => setShow(false);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+    const onSubmit = (data)=> {
 
-    const handleSubmit = ()=> {
         setLoading(true);
-        console.log(formData);
-        createNewRequerimiento(authToken, formData)
+
+        console.log(data);
+
+        createNewRequerimiento(authToken, data)
         .then((data) => {
             console.log(data);
             if (data.status !== 'Success') throw new Error(data.message);
-            Toast({ icon: 'success', title: 'Requerimiento Creado' });
+            Toast({ title: 'Requerimiento Creado' });
         })
         .then(()=> setTimeout(()=> setShow(false), 1000))
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
         .finally(()=> setLoading(false));
     };
+
+    const handleFileChange = (files) => setValue("listaArchivos", files);
+
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm({ resolver: yupResolver(FormSchema()) });
+
+    console.log(errors);
 
     return (
         <div
@@ -81,80 +80,162 @@ function NewRequestModal({ setShow }) {
                     </div>
 
                     <div className="modal-body">
-                        <div className="container row">
-                            <div className="col">
-                                <TipoRequerimientoSelect 
-                                    formData={formData} 
-                                    setFormData={setFormData}
-                                    required={true}
-                                    readOnly={false}
-                                />
-                            </div>
-                            <div className="col">
-                                <CategoriaRequerimientoSelect 
-                                    formData={formData} 
-                                    setFormData={setFormData}
-                                    required={true}
-                                    readOnly={false}
-                                />
-                            </div>
-                            <div className="col">
-                                <PrioridadRequerimientoSelect 
-                                    formData={formData} 
-                                    setFormData={setFormData}
-                                    required={true}
-                                    readOnly={false}
-                                />
-                            </div>
-                        </div>
-                        <div className="container col mt-3">
-                            
-                            <div className="input-group mb-3">
-                                <CustomInput
-                                    name={'asunto'}
-                                    type={'text'}
-                                    label={'Asunto'}
-                                    handleChange={handleChange}
-                                    value={formData.asunto}
-                                    showError={false}
-                                    required={true}
-                                />
+
+                        <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+
+                            <div className="container">
+                                <div className='row'>
+
+                                    <div className="col">
+                                        <Controller
+                                            name={'tipoRequerimientoId'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <TipoRequerimientoSelect 
+                                                    field={field}  
+                                                    showError={errors.tipoRequerimientoId} 
+                                                    errorMessage={ errors.tipoRequerimientoId && errors.tipoRequerimientoId.message } 
+                                                />
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="col">
+                                        <Controller
+                                            name={'categoriaRequerimientoId'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CategoriaRequerimientoSelect 
+                                                    field={field}  
+                                                    showError={errors.categoriaRequerimientoId} 
+                                                    errorMessage={ errors.categoriaRequerimientoId && errors.categoriaRequerimientoId.message } 
+                                                />
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="col">
+                                        <Controller
+                                            name={'prioridad'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <PrioridadRequerimientoSelect 
+                                                    field={field}  
+                                                    showError={errors.categoriaRequerimientoId} 
+                                                    errorMessage={ errors.prioridad && errors.prioridad.message } 
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="input-group mb-3">
-                                <LargeInput
-                                    name={'descripcion'}
-                                    type={'textarea'}
-                                    label={'Descripcion'}
-                                    handleChange={handleChange}
-                                    value={formData.descripcion}
-                                    showError={null}
-                                    required={true}
-                                />
+                            <div className="container mt-3">
+                                <div className='row'>
+                                    <div className="input-group">
+                                        <Controller
+                                            name={'asunto'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CustomInput  
+                                                    type={'text'}
+                                                    name={'asunto'}
+                                                    label={'Asunto'}
+                                                    handleChange={field.onChange}
+                                                    value={field.value}
+                                                    showError={errors.asunto}
+                                                    errorMessage={ errors.asunto && errors.asunto.message }
+                                                    required={true}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="input-group mb-3">
-                                <RequerimientosRelacionadosSelect
-                                    formData={formData} 
-                                    setFormData={setFormData}
-                                />
+                            <div className="container mt-3">
+                                <div className='row'>
+                                    <div className="input-group">
+                                        <Controller
+                                            name={'descripcion'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <LargeInput  
+                                                    type={'descripcion'}
+                                                    name={'descripcion'}
+                                                    label={'Descripcion'}
+                                                    handleChange={field.onChange}
+                                                    value={field.value}
+                                                    showError={errors.descripcion}
+                                                    errorMessage={ errors.descripcion && errors.descripcion.message }
+                                                    required={true}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="container mt-3">
+                                <div className='row'>
+                                    <div className="input-group">
+                                        <Controller
+                                            name={'usuarioPropietarioId'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <UsuariosPropietariosSelect 
+                                                    field={field}  
+                                                    showError={errors.usuarioPropietarioId} 
+                                                    errorMessage={ errors.usuarioPropietarioId && errors.usuarioPropietarioId.message } 
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="container mt-3">
+                                <div className='row'>
+                                    <div className="input-group">
+                                        <Controller
+                                            name={'listaRequerimientosId'}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <RequerimientosRelacionadosSelect 
+                                                    field={field}  
+                                                    showError={errors.listaRequerimientosId} 
+                                                    errorMessage={ errors.listaRequerimientosId && errors.listaRequerimientosId.message } 
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div className="input-group mb-3">
-                                <input
-                                    type="file"
-                                    className="form-control"
-                                    id="inputGroupFile01"
-                                />
+                            <div className="container mt-3">
+                                <div className='row'>
+                                    <div className="input-group">
+                                        <FileInput
+                                            name={'listaArchivos'}
+                                            label={'Adjuntar Archivos'}
+                                            descripcion={'Max 5 archivos con extension PDF, WORD o EXCEL'}
+                                            callback={handleFileChange}  
+                                            showError={errors.listaArchivos} 
+                                            errorMessage={ errors.listaArchivos && errors.listaArchivos.message } 
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            
-                        </div>
+                                
+                        </form>
+                        
                     </div>
 
                     <div style={{ display: 'flex', flexWrap: 'nowrap' }} className="modal-footer">
                         <BtnCancel action={handleClose} />
-                        <BtnSave action={handleSubmit} loading={loading} />
+                        <BtnSave action={()=> formRef.current.requestSubmit()} loading={loading} />
                     </div>
+                    
                 </div>
             </div>
         </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-function LargeInput({ name, label, handleChange, value, showError, required, readonly }) {
+function LargeInput({ name, label, handleChange, value, showError, errorMessage, required, readonly }) {
 
     return (
         <div className="mb-3" style={{ width: '100%' }}>
             <div style={{ width: '100%' }}>
-                <label for={name} class="form-label">{label}</label>
+                <label htmlFor={name} className="form-label">{label}</label>
                 { required && <b style={requiredStyles}>*</b> }
              </div>
             <textarea 
@@ -17,6 +17,7 @@ function LargeInput({ name, label, handleChange, value, showError, required, rea
                 value={value}
                 disabled={readonly}
             />
+            { showError && <b style={errorMessageStyles}> { errorMessage } </b> }
         </div>
     );
 }
@@ -24,6 +25,11 @@ function LargeInput({ name, label, handleChange, value, showError, required, rea
 const requiredStyles = {
     fontSize: '14px', 
     color: 'red'
+};
+
+const errorMessageStyles = {
+    fontSize: '12px', 
+    color: '#dc3545'
 };
 
 export default LargeInput;

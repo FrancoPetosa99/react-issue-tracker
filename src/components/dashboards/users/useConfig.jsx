@@ -1,8 +1,13 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import ConfirmModal from "../../../utils/ConfirmModal";
 import { FaStar } from "react-icons/fa6";
 
 function useConfig() {
+
+    const [ showModal, setShowModal ] = useState(false);
+
+    const [ selectedUser, setSelectedUser ] = useState(null);
+
     const columnsSchema = useMemo(
         () => [
             { header: "Nombre", accessorKey: "nombre" },
@@ -23,7 +28,10 @@ function useConfig() {
 
                         <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => console.log(row.original)}
+                            onClick={() => {
+                                setShowModal(true);
+                                setSelectedUser(row.original);
+                            }}
                         >
                             <i className="bi bi-eye-fill"></i>
                         </button>
@@ -63,7 +71,15 @@ function useConfig() {
         }
     ];
 
-    return { columnsSchema, pageSchema, filters };
+    return { 
+        columnsSchema, 
+        pageSchema,
+        filters,
+        showModal,
+        setShowModal,
+        selectedUser,
+        setSelectedUser
+    };
 }
 
 export default useConfig;

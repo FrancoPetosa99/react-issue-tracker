@@ -129,25 +129,25 @@ function RequestTable() {
 
     return (
         <div className="container d-flex mt-2  gap-2 flex-column justify-content-start align-items-center vh-100 vw-auto">
-            <div class="container row">
-                <div class="col-3  d-flex container justify-content-start align-items-end">
+            <div className="container row">
+                <div className="col-3  d-flex container justify-content-start align-items-end">
                     <button type="button" className="btn btn-outline-primary   justify-content-center align-items-center" onClick={handleNewRequest}>+ Nueva Solicitud</button>
                 </div>
-                <div class="container col-9 row gap-3  ">
-                    <div class="col">
+                <div className="container col-9 row gap-3  ">
+                    <div className="col">
                         <Filter handleChange={changeFilter} name={'tipoRequerimiento'} label="Tipo" options={requerimientoTipos} />
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <Filter handleChange={changeFilter} name={'categoriaRequerimiento'} label="Categoria" options={requerimientoCategorias} />
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <Filter handleChange={changeFilter} name={'estado'} label="Estado" options={[
                             { value: 'Abierto', text: 'Abierto' },
                             { value: 'Cerrado', text: 'Cerrado' },
                             { value: 'Asignado', text: 'Asignado' }
                         ]} />
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <Filter handleChange={changeFilter} name={'prioridad'} label="Prioridad" options={[
                             { value: 'Baja', text: 'Baja' },
                             { value: 'Media', text: 'Media' },
@@ -165,7 +165,7 @@ function RequestTable() {
                 {showTags(filter.estado, "estado")}
                 
             </div>
-            <div class="container d-flex mt-10 flex-column align-items-center gap-5  vh-auto justify-content-between">
+            <div className="container d-flex mt-10 flex-column align-items-center gap-5  vh-auto justify-content-between">
                 { !loading && <Table solicitudes={filteredSolicitudes} /> }
                 { loading && <Spinner size={60} /> }
             </div>

@@ -5,11 +5,6 @@ import getEmpresas from '../../../services/getEmpresas';
 import { useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 
-const name = 'empresaId';
-const label = 'Empresa';
-const isSearchable = false;
-const isClearable = true;
-
 function EmpresasSelect({ field, showError, errorMessage }){
 
     const { authToken } = useContext(AuthContext);
@@ -39,8 +34,8 @@ function EmpresasSelect({ field, showError, errorMessage }){
         <>
             <input 
                 type={'number'}
-                name={name}
-                id={name}
+                name={'empresaId'}
+                id={'empresaId'}
                 value={field.value} 
                 style={{ display: 'none' }}
                 onChange={handleChange} 
@@ -49,12 +44,12 @@ function EmpresasSelect({ field, showError, errorMessage }){
             <DropDownList
                 handleChange={handleChange} 
                 name={'empresa'}
-                label={label}
+                label={'Empresa'}
                 required={true}
                 readOnly={false}
                 loadOptions={loadOptions}
-                isClearable={isClearable}
-                isSearchable={isSearchable}
+                isClearable={true}
+                isSearchable={false}
                 isDisabled={false}
                 showError={showError}
                 errorMessage={errorMessage}

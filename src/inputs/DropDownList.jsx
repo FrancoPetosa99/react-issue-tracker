@@ -4,6 +4,7 @@ import AsyncSelect from "react-select/async";
 function DropDownList({ 
     name,
     label,
+    placeholder,
     required,
     readOnly,
     isSearchable, 
@@ -36,7 +37,7 @@ function DropDownList({
                 value={value}
                 onChange={(selectedOption) => handleChange(selectedOption)}
                 defaultOptions
-                placeholder="Seleccionar..."
+                placeholder={placeholder ? placeholder : 'Seleccionar...'}
                 noOptionsMessage={() => "No hay opciones disponibles"}
                 isMulti={isMulti}
                 styles={{

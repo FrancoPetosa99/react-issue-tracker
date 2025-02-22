@@ -9,7 +9,7 @@ function SelectBox({ name, label, options, handleChange }){
                 style={styles} 
                 name={name} 
                 onChange={handleChange} 
-                class="form-select form-select-sm" 
+                className="form-select form-select-sm" 
                 aria-label="Small select example" 
             >
                 { options.map(option => <option key={option.value} value={option.value}>{option.text}</option>) }

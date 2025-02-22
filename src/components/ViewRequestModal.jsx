@@ -10,6 +10,8 @@ import Comentario from './comments/Comentario';
 import ComentarioController from './comments/ComentarioController';
 import { AuthContext } from '../context/AuthContext';
 import getComentariosByRequerimiento from '../services/getComentariosByRequerimiento';
+import FormatDate from '../utils/FormatDate';
+import FileIcons from './icons/FileIcons';
 
 function ViewRequestModal({ setShow, solicitud }) {
 
@@ -37,8 +39,9 @@ function ViewRequestModal({ setShow, solicitud }) {
                             style={getPriorityColor(solicitud.prioridad)}
                         >
                             <div className="d-flex flex-column">
-                                <h5 className="modal-title">Solicitud {solicitud.codigo}</h5>
-                                <small>Fecha: {solicitud.createdAt || 'N/A'}</small>
+                                <h4 className="modal-title">Solicitud {solicitud.codigo}</h4>
+                                <h6>Estado: {solicitud.estado}</h6>
+                                <small>Fecha: {FormatDate(solicitud.createdAt)}</small>
                             </div>
                             <button
                                 type="button"
@@ -58,16 +61,16 @@ function ViewRequestModal({ setShow, solicitud }) {
                                             label={"Tipo Requerimiento"}
                                             value={solicitud.tipoRequerimiento}
                                             readonly={true}
-                                            />
+                                        />
                                     </div>
                                     <div className="col">
                                         <CustomInput 
                                             type="text"
-                                            name={"estado"}
-                                            label={"Estado"}
-                                            value={solicitud.estado}
+                                            name={"Tipo"}
+                                            label={"Categoria Requerimiento"}
+                                            value={solicitud.categoriaRequerimiento}
                                             readonly={true}
-                                            />
+                                        />
                                     </div>
                                     <div className="col">
                                         <CustomInput 
@@ -93,8 +96,8 @@ function ViewRequestModal({ setShow, solicitud }) {
                                 <div className="mb-3">
                                     <LargeInput 
                                         type="text"
-                                        name={"asunto"}
-                                        label={"Asunto"}
+                                        name={"descripcion"}
+                                        label={"Descripcion"}
                                         value={solicitud.asunto}
                                         readonly={true}
                                         />
@@ -105,19 +108,45 @@ function ViewRequestModal({ setShow, solicitud }) {
                                         type="text"
                                         name={"propietario"}
                                         label={"Propietario"}
-                                        value={solicitud.propietario ? solicitud.propietario : "No se encuentra asignado"}
+                                        value={solicitud.usuarioPropietario ? solicitud.usuarioPropietario : "No se encuentra asignado"}
                                         readonly={true}
                                         />
                                 </div>
 
-                                <div className="mb-3">
-                                    <label className="form-label">Archivos adjuntos</label>
-                                    <div className="list-group">
-                                        <a href="#" className="list-group-item list-group-item-action">
-                                            <i className="bi bi-file-earmark me-2"></i>archivo.pdf
-                                        </a>
+                                {
+                                    solicitud.listaArchivosAdjuntos.length > 0 &&
+                                    <div className="mb-3">
+                                        <label className="form-label">Archivos adjuntos</label>
+                                        <div className="list-group">
+                                            {
+                                                solicitud.listaArchivosAdjuntos.map(archivo => 
+                                                    <a href="#" className="list-group-item list-group-item-action">
+                                                        <FileIcons extension={archivo.extension}/>
+                                                        {archivo.nombre}
+                                                    </a>
+                                                )
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                }
+
+                                {
+                                    solicitud.requerimientosRelacionados.length > 0 &&
+                                    <div className="mb-3">
+                                        <label className="form-label">Requerimientos Relacionados</label>
+                                        <div className="list-group">
+                                            {
+                                                solicitud.requerimientosRelacionados.map(requerimiento => 
+                                                    <a href="#" className="list-group-item list-group-item-action d-flex flex-column">
+                                                        <span>{requerimiento.codigo}</span>
+                                                        <small className="text-muted">{requerimiento.estado}</small>
+                                                    </a>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
                             </div>
 
                             <CustomDivider />

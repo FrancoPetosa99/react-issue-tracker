@@ -5,12 +5,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import Toast from '../../../utils/Toast';
 
-function TipoRequerimientoSelect({ formData, setFormData, required, readOnly }){
-    
-    const name = 'tipoRequerimientoId';
-    const label = 'Tipo Requerimiento';
-    const isSearchable = false;
-    const isClearable = true;
+function TipoRequerimientoSelect({ field, showError, errorMessage }){
 
     const { authToken } = useContext(AuthContext);
 
@@ -18,31 +13,46 @@ function TipoRequerimientoSelect({ formData, setFormData, required, readOnly }){
         getTipoRequerimientos(authToken)
         .then((data) => {
             const mappedArr = data.data.map(tipoRequerimiento => {
-                return { value: tipoRequerimiento.id, label: tipoRequerimiento.descripcion, id: tipoRequerimiento.id };
+                return { 
+                    value: tipoRequerimiento.id, 
+                    label: tipoRequerimiento.descripcion, 
+                    id: tipoRequerimiento.id 
+                };
             });
             callback(mappedArr);
         })
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }));
     };
 
-    const handleChange = ({ value }) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+    const handleChange = (selectedTipoRequerimiento) => {
+        if (!selectedTipoRequerimiento) return field.onChange(null);
+        const tipoRequerimientoId = selectedTipoRequerimiento.id;        
+        field.onChange(tipoRequerimientoId);
     };
     
     return( 
-        <DropDownList
-            handleChange={handleChange} 
-            name={name}
-            label={label}
-            required={required}
-            readOnly={readOnly}
-            loadOptions={loadOptions}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
-        />
+        <>
+            <input 
+                type={'number'}
+                name={'tipoRequerimientoId'}
+                id={'tipoRequerimientoId'}
+                value={field.value} 
+                style={{ display: 'none' }}
+                onChange={handleChange} 
+            />
+            <DropDownList
+                handleChange={handleChange} 
+                name={'tipoRequerimiento'}
+                label={'Tipo Requerimiento'}
+                required={true}
+                readOnly={false}
+                loadOptions={loadOptions}
+                isClearable={true}
+                isSearchable={false}
+                showError={showError}
+                errorMessage={errorMessage}
+            />
+        </>
     );
 };
 

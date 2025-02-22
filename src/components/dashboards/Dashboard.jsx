@@ -1,4 +1,4 @@
-import React, { Children, useState } from "react";
+import React, { useState } from "react";
 import { 
   getCoreRowModel, 
   getFilteredRowModel, 
@@ -29,19 +29,16 @@ function Dashboard({ children, data, columnsSchema, pageSchema, filters }) {
   });
 
   const onFilterChange = (id, value)=> {
-    
     const filter = columnFilters.find(filter => filter.id === id);
-
     filter.value = value;
-
     setColumnFilters([ ...columnFilters ]);
   };
   
   return (
-    <div className="container mt-4">
+    <div className="container mt-2">
       
       { children }
-      
+
       <Filters
         filters={filters}
         onFilterChange={onFilterChange}

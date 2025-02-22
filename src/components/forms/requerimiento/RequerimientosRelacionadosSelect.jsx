@@ -4,14 +4,8 @@ import { AuthContext } from '../../../context/AuthContext';
 import DropDownList from '../../../inputs/DropDownList';
 import getRequerimientos from '../../../services/getRequerimientos';
 
-function RequerimientosRelacionadosSelect({ formData, setFormData }){
+function RequerimientosRelacionadosSelect({ field, showError, errorMessage  }){
     
-    const name = 'listaRequerimientosId';
-    const label = 'Relacionar Requerimientos';
-    const isSearchable = true;
-    const isClearable = true;
-    const isMulti = true;
-
     const { authToken } = useContext(AuthContext);
 
     const loadOptions = (searchValue, callback) => {
@@ -41,22 +35,22 @@ function RequerimientosRelacionadosSelect({ formData, setFormData }){
     }
 
     const handleChange = (data) => {
-        const mappedArr = data.map(opcion => opcion.value);
-        setFormData({
-            ...formData,
-            [name]: mappedArr,
-        });
+        const listaRequerimientosId = data.map(opcion => opcion.value);
+        field.onChange(listaRequerimientosId);
     };
     
     return( 
         <DropDownList 
-            isMulti={isMulti}
+            isMulti={true}
             handleChange={handleChange} 
-            name={name} 
-            label={label}
+            name={'listaRequerimientosId'} 
+            label={'Relacionar Requerimientos'}
+            placeholder={'Seleccionar Requerimiento...'}
             loadOptions={loadOptions}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
+            isClearable={true}
+            isSearchable={true}
+            showError={showError}
+            errorMessage={errorMessage}
         />
     );
 };

@@ -5,13 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function BtnBack({ route }) {
 
     const navigate = useNavigate();
-
-    const styles = {
-        width: '100%',
-        padding: '1rem',
-        margin: '1rem'
-    };
-
+    
     const handleBack = () => route ? navigate(route) : navigate(-1);
     
     return (
@@ -22,5 +16,11 @@ function BtnBack({ route }) {
         </div>
     );
 }
+
+const styles = {
+    width: '100%',
+    padding: '1rem',
+    margin: '1rem'
+};
 
 export default BtnBack;

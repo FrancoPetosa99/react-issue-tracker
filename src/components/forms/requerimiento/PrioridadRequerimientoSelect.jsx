@@ -1,13 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DropDownList from '../../../inputs/DropDownList';
 
-function PrioridadRequerimientoSelect({ formData, setFormData, required, readOnly }){
+function PrioridadRequerimientoSelect({ field, showError, errorMessage }){
     
-    const name = 'prioridad';
-    const label = 'Prioridad';
-    const isSearchable = false;
-    const isClearable = true;
-
     const loadOptions = (searchValue, callback) => {
 
         const options = [
@@ -20,24 +15,35 @@ function PrioridadRequerimientoSelect({ formData, setFormData, required, readOnl
         callback(options);
     }
 
-    const handleChange = ({ value }) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+    const handleChange = (prioridad) => {
+        if (!prioridad) return field.onChange(null);
+        const value = prioridad.value;        
+        field.onChange(value);
     };
     
     return( 
-        <DropDownList 
-            handleChange={handleChange} 
-            name={name} 
-            label={label}
-            required={required}
-            readOnly={readOnly}
-            loadOptions={loadOptions}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
-        />
+        <>
+            <input 
+                type={'text'}
+                name={'prioridad'}
+                id={'prioridad'}
+                value={field.value} 
+                style={{ display: 'none' }}
+                onChange={handleChange} 
+            />
+            <DropDownList 
+                handleChange={handleChange} 
+                name={'prioridad'} 
+                label={'Prioridad'}
+                required={true}
+                readOnly={false}
+                loadOptions={loadOptions}
+                isClearable={true}
+                isSearchable={false}
+                showError={showError}
+                errorMessage={errorMessage}
+            />
+        </>
     );
 };
 
