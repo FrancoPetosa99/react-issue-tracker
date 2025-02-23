@@ -3,6 +3,7 @@ import FormatDate from "../../../utils/FormatDate";
 
 function useConfig() {
 
+    const [ showNewRequerimientoModal, setShowNewRequerimientoModal ] = useState(false);
     const [ showViewRequerimientoModal, setShowViewRequerimientoModal ] = useState(false);
     const [ selectedRequerimientoId, setSelectedRequerimientoId ] = useState(null); 
 
@@ -70,8 +71,8 @@ function useConfig() {
           label: 'Categoria'
         },
         {
-          name: 'Estado',
-          label: 'estado'
+          name: 'estado',
+          label: 'Estado'
         }
     ];
 
@@ -79,6 +80,8 @@ function useConfig() {
         columnsSchema, 
         pageSchema,
         filters,
+        showNewRequerimientoModal,
+        setShowNewRequerimientoModal,
         showViewRequerimientoModal,
         setShowViewRequerimientoModal,
         selectedRequerimientoId

@@ -1,16 +1,16 @@
 import React from 'react';
-import FilterInput from './FilterInput';
+import FilterSelect from './FilterSelect';
 
 function Filters({ filters, onFilterChange }) {
     return(
         <div style={stylesContainer}>
             { filters.map(filter => 
-                <FilterInput 
-                    type={'text'}
+                <FilterSelect 
                     name={filter.name}
                     placeholder={filter.label}
                     key={filter.name}
                     callback={onFilterChange}
+                    fetchOptions={filter.fetchOptions}
                 />
             )}
       </div>

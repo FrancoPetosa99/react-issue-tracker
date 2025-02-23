@@ -49,7 +49,7 @@ const styles = {
     },
     icon: {
         fontSize: "14px",
-    },
+    }
 };
 
 export default FilterInput;

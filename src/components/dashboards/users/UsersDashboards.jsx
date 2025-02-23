@@ -6,12 +6,10 @@ import { AuthContext } from "../../../context/AuthContext";
 import Spinner from "../../Spinner";
 import { useNavigate } from "react-router-dom";
 import UserModal from "../../modales/UserModal";
+import FiltersLayout from "../FiltersLayout";
+import FilterInput from "../FilterInput";
 
 function UsersDashboards() {
-
-  const navigate = useNavigate();
-
-  const { authToken } = useContext(AuthContext);
 
   const { 
     columnsSchema, 
@@ -20,6 +18,21 @@ function UsersDashboards() {
     showModal,
     setShowModal,
     selectedUser } = useConfig();
+
+  const [ columnFilters, setColumnFilters ] = useState(
+    filters.map(filter => { 
+      return { id: filter.name, value: '' }
+  })); 
+  
+  const onFilterChange = (id, value)=> {
+    const filter = columnFilters.find(filter => filter.id === id);
+    filter.value = value;
+    setColumnFilters([ ...columnFilters ]);
+  };
+    
+  const navigate = useNavigate();
+
+  const { authToken } = useContext(AuthContext);
 
   const [ loading, setLoading ] = useState(false);
   const [ users, setUsers ] = useState([ ]);
@@ -35,9 +48,7 @@ function UsersDashboards() {
 
   }, []);
 
-  const goToRegisterForm = () => {
-    navigate('/register');
-  };
+  const goToRegisterForm = () => navigate('/register');
 
   return (
     <div className="container mt-2">
@@ -49,6 +60,8 @@ function UsersDashboards() {
           columnsSchema={columnsSchema}
           pageSchema={pageSchema}
           filters={filters}
+          columnFilters={columnFilters}
+          onFilterChange={onFilterChange}
         >
           <div className="mb-2">
             <button 
@@ -59,6 +72,18 @@ function UsersDashboards() {
               + Nuevo Usuario
             </button>
           </div>
+
+          <FiltersLayout>
+            { filters.map(filter => 
+              <FilterInput
+                type={'text'}
+                name={filter.name}
+                placeholder={filter.label}
+                key={filter.name}
+                callback={onFilterChange}
+              />
+            )}
+          </FiltersLayout>
 
         </Dashboard> 
       }
