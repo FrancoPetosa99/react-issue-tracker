@@ -24,6 +24,7 @@ function Dashboard({ children, data, columnsSchema, pageSchema, filters }) {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    columnResizeMode: 'onChange',
     initialState: { pagination: pageSchema },
     state: { columnFilters: columnFilters }
   });

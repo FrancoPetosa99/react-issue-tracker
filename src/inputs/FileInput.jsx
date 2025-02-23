@@ -82,7 +82,7 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
                             <div>
                                 <span>{archivo.nombre} <small className="text-muted">{archivo.extension}</small></span>
                                 { archivo.extension === 'pdf' && <i style={pdfIconStyle} className="bi bi-file-earmark-pdf-fill ms-2"></i> }
-                                { archivo.extension === 'word' && <i style={wordIconStyle} className="bi bi-file-earmark-word-fill ms-2"></i> }
+                                { archivo.extension === 'doc' && <i style={wordIconStyle} className="bi bi-file-earmark-word-fill ms-2"></i> }
                                 { archivo.extension === 'xls' && <i style={spreadSheetIconStyle} className="bi bi-file-earmark-spreadsheet-fill ms-2"></i> }
                             </div>
                             <button 
@@ -103,7 +103,7 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
     );
 }
 
-const validExtensions = ['pdf', 'word', 'xls'];
+const validExtensions = ['pdf', 'doc', 'xls'];
 
 const pdfIconStyle = {
     fontSize: '24px',

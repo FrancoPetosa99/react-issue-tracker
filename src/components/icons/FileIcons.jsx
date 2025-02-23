@@ -7,7 +7,7 @@ function FileIcons({ extension }) {
         return(<i style={pdfIconStyle} className="bi bi-file-earmark-pdf-fill ms-2"></i>);
     }
 
-    if (extension ==='word') {
+    if (extension ==='doc') {
         
         return( <i style={wordIconStyle} className="bi bi-file-earmark-word-fill ms-2"></i>);
     }

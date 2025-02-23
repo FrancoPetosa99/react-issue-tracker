@@ -22,7 +22,6 @@ function UsersDashboards() {
     selectedUser } = useConfig();
 
   const [ loading, setLoading ] = useState(false);
-  const [ show, setShow ] = useState(false);
   const [ users, setUsers ] = useState([ ]);
 
   useEffect(() => {

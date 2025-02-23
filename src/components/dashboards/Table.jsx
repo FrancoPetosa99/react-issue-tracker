@@ -3,8 +3,8 @@ import React from 'react';
 
 function Table({ useTable }) {
     return(
-        <table className="table table-striped">
-            <thead className="table-dark">
+        <table className="table table-sm">
+            <thead className="table-light">
                 {useTable.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
