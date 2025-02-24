@@ -22,7 +22,11 @@ function useConfig() {
                     </span>
                 )
             },
-            { header: "Tipo", accessorKey: "tipoRequerimiento" },
+            { 
+                header: "Tipo", 
+                accessorKey: "tipoRequerimiento",
+                filterFn: 'multiValueFilter'
+             },
             { header: "Categoria", accessorKey: "categoriaRequerimiento" },
             { 
                 header: "Fecha Alta", 
@@ -61,25 +65,9 @@ function useConfig() {
 
     const pageSchema = useMemo(() => ({ pageSize: 10, pageIndex: 0 }), []);
 
-    const filters = [
-        {
-          name: 'tipoRequerimiento',
-          label: 'Tipo'
-        },
-        {
-          name: 'categoriaRequerimiento',
-          label: 'Categoria'
-        },
-        {
-          name: 'estado',
-          label: 'Estado'
-        }
-    ];
-
     return { 
         columnsSchema, 
         pageSchema,
-        filters,
         showNewRequerimientoModal,
         setShowNewRequerimientoModal,
         showViewRequerimientoModal,

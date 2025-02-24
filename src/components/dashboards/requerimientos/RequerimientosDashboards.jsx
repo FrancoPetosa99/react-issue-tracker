@@ -8,28 +8,38 @@ import ViewRequestModal from "../../ViewRequestModal";
 import NewRequestModal from "../../NewRequestModal";
 import Toast from "../../../utils/Toast";
 import FiltersLayout from "../FiltersLayout";
-import FilterInput from "../FilterInput"
+import FilterTipoRequerimiento from "./FilterTipoRequerimiento";
+import FilterCategoriaRequerimiento from "./FilterCategoriaRequerimiento";
+import FilterEstado from "./FilterEstado";
 
 function RequerimientosDashboards() {
 
   const { 
     columnsSchema, 
     pageSchema, 
-    filters,
     showViewRequerimientoModal,
     setShowViewRequerimientoModal,
     selectedRequerimientoId } = useConfig();
 
-  const [ columnFilters, setColumnFilters ] = useState(
-    filters.map(filter => { 
-      return { id: filter.name, value: '' }
-  })); 
+  const [ columnFilters, setColumnFilters ] = useState([ ]); 
 
-  const onFilterChange = (id, value)=> {
-    const filter = columnFilters.find(filter => filter.id === id);
-    filter.value = value;
-    setColumnFilters([ ...columnFilters ]);
+  const onFilterChange = (id, value) => {
+    setColumnFilters((prevFilters) => {
+
+      const existingFilter = prevFilters.find(filter => filter.id === id);
+
+      if (existingFilter) {
+        return prevFilters.map(filter =>
+            filter.id === id ? { ...filter, value } : filter
+        );
+      } else {
+        return [...prevFilters, { id, value }];
+      }
+    });
   };
+
+
+  console.log(columnFilters);
 
   const [ showNewRequerimientoModal, setShowNewRequerimientoModal ] = useState(false);
 
@@ -73,15 +83,19 @@ function RequerimientosDashboards() {
             </div>
 
             <FiltersLayout>
-              { filters.map(filter => 
-                <FilterInput
-                  type={'text'}
-                  name={filter.name}
-                  placeholder={filter.label}
-                  key={filter.name}
-                  callback={onFilterChange}
-                />
-              )}
+              
+              <FilterTipoRequerimiento 
+                handleChange={onFilterChange}
+              />
+
+              <FilterCategoriaRequerimiento 
+                handleChange={onFilterChange}
+              />
+
+              <FilterEstado 
+                handleChange={onFilterChange}
+              />
+              
             </FiltersLayout>
 
           </Dashboard> 

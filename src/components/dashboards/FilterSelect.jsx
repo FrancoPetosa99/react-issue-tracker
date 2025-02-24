@@ -1,37 +1,34 @@
-import React, { useState } from 'react';
-import DropDownList from '../../inputs/DropDownList';
+import React from 'react';
+import { MdFilterAlt } from "react-icons/md";
+import AsyncSelect from 'react-select/async';
 
-function FilterSelect({ name, placeholder, fetchOptions, handleChange }) {
+function FilterSelect({ name, placeholder, loadOptions, onFilterChange }) {
 
-    const [ input, setInput ] = useState('');
-
-    const loadOptions = (searchValue, callback) => {
-        fetchOptions()
-        .then((data) => callback(data));
-    };
-
-    const onFilterChange = (e) => {
-
-        const name = e.target.name;
-        const value = e.target.value;
-
-        setInput(value);
-
-        handleChange(name, value);
+    const CustomDropdownIndicator = (props) => {
+        const { selectProps } = props;
+        return (
+            <div {...props.innerRef} {...props.innerProps} style={{ padding: "5px" }}>
+                <MdFilterAlt size={20} color={selectProps.menuIsOpen ? "#007bff" : "#6c757d"} />
+            </div>
+        );
     };
 
     return (
-        <DropDownList 
+        <AsyncSelect
+            className="basic-single"
+            classNamePrefix="select" 
             name={name}
+            id={name}
             placeholder={placeholder}
             required={false}
-            readOnly={false}
+            isDisabled={false}
             isSearchable={false}
             isClearable={false}
-            handleChange={onFilterChange}
+            onChange={(selectedOption) => onFilterChange(selectedOption)}
             loadOptions={loadOptions}
-            value={input}
+            defaultOptions
             isMulti={false}
+            components={{ DropdownIndicator: CustomDropdownIndicator }} 
         />
     );
 }

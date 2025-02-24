@@ -20,7 +20,14 @@ function Dashboard({ children, data, columnsSchema, pageSchema, columnFilters })
     getSortedRowModel: getSortedRowModel(),
     columnResizeMode: 'onChange',
     initialState: { pagination: pageSchema },
-    state: { columnFilters: columnFilters }
+    state: { columnFilters: columnFilters },
+    filterFns: {
+      multiValueFilter: (row, columnId, filterValue) => {
+        if (!filterValue || filterValue.length === 0) return true; 
+        const rowValue = row.getValue(columnId);
+        return filterValue.some(value => value === rowValue);
+      }
+    }
   });
 
   return (

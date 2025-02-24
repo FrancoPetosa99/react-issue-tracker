@@ -2,7 +2,7 @@ import React from 'react';
 
 function FiltersLayout({ children }) {
     return(
-        <div style={stylesContainer}>
+        <div className='mb-3' style={stylesContainer}>
             { children }
       </div>
     );
@@ -12,7 +12,7 @@ const stylesContainer = {
     height: 'auto',
     width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     gap: '.4rem'
 };
 
