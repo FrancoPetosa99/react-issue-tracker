@@ -26,17 +26,21 @@ function useConfig() {
                 header: "Tipo", 
                 accessorKey: "tipoRequerimiento",
                 filterFn: 'multiValueFilter'
-             },
-            { header: "Categoria", accessorKey: "categoriaRequerimiento" },
+            },
+            { 
+                header: "Categoria", 
+                accessorKey: "categoriaRequerimiento",
+                filterFn: 'multiValueFilter'
+            },
             { 
                 header: "Fecha Alta", 
                 accessorKey: "createdAt",
                 cell: ({ row }) => (FormatDate(row.original.createdAt))
             },
-            {
-                header: "Estado",
+            { 
+                header: "Estado", 
                 accessorKey: "estado",
-                cell: ({ row }) => (row.original.estado)
+                filterFn: 'multiValueFilter'
             },
             { 
                 header: "Propietario", 
@@ -48,6 +52,7 @@ function useConfig() {
                 cell: ({ row }) => (
                     <div style={{ display: 'flex', justifyContent:'space-evenly' }}>
                         <button
+                            disabled={row.original.canViewDetails ? false : true}
                             className="btn btn-primary btn-sm"
                             onClick={() => {
                                 setShowViewRequerimientoModal(true);

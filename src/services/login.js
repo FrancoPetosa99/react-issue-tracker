@@ -7,6 +7,11 @@ function login(formData) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData) 
     })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.status !== 'Success') throw new Error(data.message);
+        return data.data;
+    });
 };
 
 export default login;

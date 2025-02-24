@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import getTipoRequerimientos from '../../../services/getTipoRequerimientos';
 import { AuthContext } from '../../../context/AuthContext';
-import AsyncSelect from 'react-select/async';
 import FilterLabel from '../FilterLabel';
 import FilterSelect from '../FilterSelect';
 

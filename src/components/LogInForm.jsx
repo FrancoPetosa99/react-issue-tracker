@@ -15,7 +15,7 @@ function LogInForm() {
 
     const navegate = useNavigate();
 
-    const { setIsAuthenticated, setAuthToken } = useContext(AuthContext);
+    const { setIsAuthenticated, setAuthToken, setCurrentUser } = useContext(AuthContext);
 
     const handleSubmit = (e)=> {
 
@@ -24,15 +24,15 @@ function LogInForm() {
         setLoading(true);
 
        login(formData)
-        .then((res) => res.json())
         .then((data) => {
             console.log(data);
-            if (data.status !== 'Success') throw new Error(data.message);
             localStorage.setItem("isAuthenticated", "true");
-            localStorage.setItem("authToken", data.data);
+            localStorage.setItem("authToken", data.authToken);
+            localStorage.setItem("currentUser", JSON.stringify(data.currentUser));
             setIsAuthenticated(true);
-            setAuthToken(data.data);
-            Toast({ icon: 'success', title: 'Bienvenido', text: 'Inicio de sesión exitoso' });
+            setAuthToken(data.authToken);
+            setCurrentUser(data.currentUser);
+            Toast({ icon: 'success', title: 'Bienvenido ' + data.currentUser.nombreUsuario, text: 'Inicio de sesión exitoso' });
             navegate('/');
         })
         .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' +  e.message }))
