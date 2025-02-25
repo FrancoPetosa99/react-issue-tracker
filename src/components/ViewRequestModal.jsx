@@ -185,7 +185,7 @@ function ViewRequestModal({ setShow, requerimientoId }) {
                                 <h5>Actividad</h5>
 
                                 <ComentarioController 
-                                    comentarios={comentarios}
+                                    comentarios={comentarios.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))}
                                     setComentarios={setComentarios}
                                     requerimientoId={solicitud.id}
                                 />
@@ -194,9 +194,7 @@ function ViewRequestModal({ setShow, requerimientoId }) {
                                     {
                                         comentarios.map(comentario => 
                                             <Comentario 
-                                                descripcion={comentario.descripcion} 
-                                                emisor={comentario.emisor} 
-                                                fecha={comentario.createdAt}
+                                                comentario = {comentario}
                                         />)
                                     }
                                 </div>

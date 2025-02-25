@@ -79,7 +79,7 @@ function useConfig() {
                             />
                         </IsInterno>
                         <IsExterno>
-                            <p>N/A</p>
+                            <p>Sin Asignar</p>
                         </IsExterno>
                     </div>
                 )
