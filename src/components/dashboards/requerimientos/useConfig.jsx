@@ -2,6 +2,8 @@ import { useContext, useMemo, useState } from "react";
 import FormatDate from "../../../utils/FormatDate";
 import AsignarPropietarioSelect from "../../modales/requerimientos/visualizarRequerimiento/AsignarPropietarioSelect";
 import { AuthContext } from "../../../context/AuthContext";
+import IsInterno from "../../../groupsAndConditions/IsInterno";
+import IsExterno from "../../../groupsAndConditions/IsExterno";
 
 function useConfig() {
 
@@ -70,10 +72,15 @@ function useConfig() {
                     row.original.usuarioPropietario 
                     ? row.original.usuarioPropietario 
                     : <div style={{ display: 'flex', justifyContent:'space-evenly' }}>
-                        <AsignarPropietarioSelect 
-                            requerimientoId={row.original.id}
-                            callback={(label) => updateUsuarioPropietario(row.original.id, label)}
-                        />
+                        <IsInterno>
+                            <AsignarPropietarioSelect 
+                                requerimientoId={row.original.id}
+                                callback={(label) => updateUsuarioPropietario(row.original.id, label)}
+                            />
+                        </IsInterno>
+                        <IsExterno>
+                            <p>N/A</p>
+                        </IsExterno>
                     </div>
                 )
             },
