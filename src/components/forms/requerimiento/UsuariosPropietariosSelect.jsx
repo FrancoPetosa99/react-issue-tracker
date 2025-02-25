@@ -11,10 +11,8 @@ function UsuariosPropietariosSelect({ field, showError, errorMessage  }){
     const loadOptions = (searchValue, callback) => {
 
         getInternalUsers(authToken)
-        .then(data => {
+        .then(users => {
             
-            const users = data.data;
-
             const mappedArr = users.map(user => {
                 return {
                     value: user.id, 

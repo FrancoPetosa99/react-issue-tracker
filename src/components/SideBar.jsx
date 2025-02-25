@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogOutButton'
 import ConfirmModal from '../utils/ConfirmModal';
 import Toast from '../utils/Toast';
+import IsAuthenticated from '../groupsAndConditions/IsAuthenticated';
+import IsInterno from '../groupsAndConditions/IsInterno';
 
 function SideBar() {
 
@@ -21,7 +23,8 @@ function SideBar() {
         
         ConfirmModal(() => {
             localStorage.setItem("isAuthenticated", "false");
-            localStorage.setItem("authToken", null);
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("currentUser");
             setIsAuthenticated(false);
             Toast({title: 'Se ha cerrado la sesión con éxito'});
             navegate("/login");
@@ -47,8 +50,9 @@ function SideBar() {
                     <Link style={navTextLink} className="nav-link" to="/"><i style={navIcon} className="bi bi-grid"></i>Mis Solicitudes</Link>
                 </li>
                 <li style={navItemStyles}>
-                    
-                    <Link style={navTextLink} className="nav-link" to="/users"><i style={navIcon} className="bi bi-people"></i>Usuarios</Link>
+                    <IsInterno>
+                        <Link style={navTextLink} className="nav-link" to="/users"><i style={navIcon} className="bi bi-people"></i>Usuarios</Link>
+                    </IsInterno>
                 </li>
                 <li style={navItemStyles}>
                     
@@ -60,16 +64,11 @@ function SideBar() {
                 </li>
             </ul>
             <ul style={navItemsLayoutStyles} className="navbar-nav w-100">
-                {!isAuthenticated && (
-                    <li style={navItemStyles}>
-                        <Link style={navTextLink} className="nav-link" to="/login"><i style={navIcon} className="bi bi-box-arrow-right"></i>LogOut</Link>
-                    </li>
-                )}
-                {isAuthenticated && (
+                <IsAuthenticated>
                     <li style={navItemStyles}>
                         {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} logout={logout} />}
                     </li>
-                )}
+                </IsAuthenticated>
             </ul>
         </nav>
     );

@@ -5,9 +5,9 @@ import { AuthContext } from "../context/AuthContext";
 
 const PublicRoute = ({ children }) => {
 
-  const { currentUser } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
-  if (currentUser) return <Navigate to="/" />;
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return children;
 };

@@ -19,7 +19,10 @@ function RequerimientosDashboards() {
     pageSchema, 
     showViewRequerimientoModal,
     setShowViewRequerimientoModal,
-    selectedRequerimientoId } = useConfig();
+    selectedRequerimientoId,
+    data, 
+    setData,
+    updateUsuarioPropietario } = useConfig();
 
   const [ columnFilters, setColumnFilters ] = useState([ ]); 
 
@@ -38,23 +41,18 @@ function RequerimientosDashboards() {
     });
   };
 
-
-  console.log(columnFilters);
-
   const [ showNewRequerimientoModal, setShowNewRequerimientoModal ] = useState(false);
 
   const { authToken } = useContext(AuthContext);
 
-
   const [ loading, setLoading ] = useState(false);
-  const [ requerimientos, setRequerimientos ] = useState([ ]);
 
   useEffect(() => {
 
     setLoading(true);
 
     getRequerimientos(authToken)
-    .then((data) => setRequerimientos(data.data))
+    .then((data) => setData(data.data))
     .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
     .finally(()=> setLoading(false));
 
@@ -66,7 +64,8 @@ function RequerimientosDashboards() {
       { !loading &&
         <>
           <Dashboard
-            data={requerimientos}
+            data={data}
+            updateData={updateUsuarioPropietario}
             columnsSchema={columnsSchema}
             pageSchema={pageSchema}
             columnFilters={columnFilters}

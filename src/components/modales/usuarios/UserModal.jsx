@@ -3,9 +3,9 @@ import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React from 'react';
-import CustomInput from '../../inputs/CustomInput';
+import CustomInput from '../../../inputs/CustomInput';
 import { FaStar } from 'react-icons/fa';
-import FormatDate from '../../utils/FormatDate';
+import FormatDate from '../../../utils/FormatDate';
 
 function UserModal({ setShow, user }) {
 

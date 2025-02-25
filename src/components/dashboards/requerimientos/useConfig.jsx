@@ -1,11 +1,32 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import FormatDate from "../../../utils/FormatDate";
+import AsignarPropietarioSelect from "../../modales/requerimientos/visualizarRequerimiento/AsignarPropietarioSelect";
+import { AuthContext } from "../../../context/AuthContext";
 
 function useConfig() {
 
+    const { currentUser } = useContext(AuthContext);
+
     const [ showNewRequerimientoModal, setShowNewRequerimientoModal ] = useState(false);
     const [ showViewRequerimientoModal, setShowViewRequerimientoModal ] = useState(false);
-    const [ selectedRequerimientoId, setSelectedRequerimientoId ] = useState(null); 
+    const [ selectedRequerimientoId, setSelectedRequerimientoId ] = useState(null);
+    const [ data, setData ] = useState([ ]);
+
+    const updateUsuarioPropietario = (rowId, label) => {
+
+        setData((prevData) =>
+            prevData.map((requerimiento) =>
+                requerimiento.id === rowId
+                    ? { 
+                        ...requerimiento, 
+                        usuarioPropietario: label, 
+                        estado:'Asignado', 
+                        canViewDetails: (currentUser.nombreUsuario === requerimiento.usuarioEmisor || currentUser.nombreUsuario === requerimiento.usuarioPropietario)
+                    }
+                    : requerimiento
+            )
+        );
+    };
 
     const columnsSchema = useMemo(
         () => [
@@ -45,7 +66,16 @@ function useConfig() {
             { 
                 header: "Propietario", 
                 accessorKey: "usuarioPropietario",
-                cell: ({ row }) => (row.original.usuarioPropietario ? row.original.usuarioPropietario : 'N/A')
+                cell: ({ row }) => (
+                    row.original.usuarioPropietario 
+                    ? row.original.usuarioPropietario 
+                    : <div style={{ display: 'flex', justifyContent:'space-evenly' }}>
+                        <AsignarPropietarioSelect 
+                            requerimientoId={row.original.id}
+                            callback={(label) => updateUsuarioPropietario(row.original.id, label)}
+                        />
+                    </div>
+                )
             },
             {
                 header: " ",
@@ -77,7 +107,10 @@ function useConfig() {
         setShowNewRequerimientoModal,
         showViewRequerimientoModal,
         setShowViewRequerimientoModal,
-        selectedRequerimientoId
+        selectedRequerimientoId,
+        data, 
+        setData,
+        updateUsuarioPropietario
     };
 }
 

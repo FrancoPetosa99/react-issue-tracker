@@ -15,6 +15,9 @@ import FileIcons from './icons/FileIcons';
 import getRequerimientoById from '../services/getRequerimientoById';
 import Toast from '../utils/Toast';
 import Spinner from './Spinner';
+import AsignarPropietarioSelect from './modales/requerimientos/visualizarRequerimiento/AsignarPropietarioSelect';
+import IsInterno from '../groupsAndConditions/IsInterno';
+import IsExterno from '../groupsAndConditions/IsExterno';
 
 function ViewRequestModal({ setShow, requerimientoId }) {
 
@@ -129,6 +132,16 @@ function ViewRequestModal({ setShow, requerimientoId }) {
                                             value={solicitud.usuarioPropietario ? solicitud.usuarioPropietario : "No se encuentra asignado"}
                                             readonly={true}
                                             />
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <CustomInput 
+                                            type="text"
+                                            name={"emisor"}
+                                            label={"Emisor"}
+                                            value={solicitud.usuarioEmisor}
+                                            readonly={true}
+                                        />
                                     </div>
 
                                     {

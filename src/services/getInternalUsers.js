@@ -9,6 +9,7 @@ function getInternalUsers(authToken) {
         }
     })
     .then((res) => res.json())
+    .then((data) => data.data);
 };
 
 export default getInternalUsers;

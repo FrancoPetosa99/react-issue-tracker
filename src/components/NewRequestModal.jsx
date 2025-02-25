@@ -17,6 +17,7 @@ import BtnCancel from './btns/BtnCancel';
 import FormSchema from './forms/requerimiento/FormSchema';
 import FileInput from '../inputs/FileInput'
 import UsuariosPropietariosSelect from './forms/requerimiento/UsuariosPropietariosSelect';
+import IsInterno from '../groupsAndConditions/IsInterno';
 
 function NewRequestModal({ setShow }) {
     
@@ -176,23 +177,25 @@ function NewRequestModal({ setShow }) {
                                 </div>
                             </div>
 
-                            <div className="container mt-3">
-                                <div className='row'>
-                                    <div className="input-group">
-                                        <Controller
-                                            name={'usuarioPropietarioId'}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <UsuariosPropietariosSelect 
-                                                    field={field}  
-                                                    showError={errors.usuarioPropietarioId} 
-                                                    errorMessage={ errors.usuarioPropietarioId && errors.usuarioPropietarioId.message } 
-                                                />
-                                            )}
-                                        />
+                            <IsInterno>
+                                <div className="container mt-3">
+                                    <div className='row'>
+                                        <div className="input-group">
+                                            <Controller
+                                                name={'usuarioPropietarioId'}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <UsuariosPropietariosSelect 
+                                                        field={field}  
+                                                        showError={errors.usuarioPropietarioId} 
+                                                        errorMessage={ errors.usuarioPropietarioId && errors.usuarioPropietarioId.message } 
+                                                    />
+                                                )}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </IsInterno>
 
                             <div className="container mt-3">
                                 <div className='row'>

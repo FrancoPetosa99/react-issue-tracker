@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { IoMdRemove } from "react-icons/io";
 import Toast from "../utils/Toast";
 
 function FileInput({ name, label, descripcion, required, showError, errorMessage, callback }) {
@@ -86,13 +87,15 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
                                 { archivo.extension === 'xls' && <i style={spreadSheetIconStyle} className="bi bi-file-earmark-spreadsheet-fill ms-2"></i> }
                             </div>
                             <button 
+                                style={{ borderRadius: '50' }}
                                 className="btn btn-danger btn-sm"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleRemoveFile(archivo.nombre);
+                                    
                                 }}
                             >
-                                <i className="bi bi-trash"></i>
+                                <IoMdRemove size={14} />
                             </button>
                         </li>
                     ))}

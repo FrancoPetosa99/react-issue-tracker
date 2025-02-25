@@ -10,7 +10,7 @@ function FormSchema() {
         tipoRequerimientoId: yup.number().required("Seleccionar tipo es obligatorio"),
         categoriaRequerimientoId: yup.number().required("Seleccionar categoria es obligatorio"),
         usuarioPropietarioId: yup.number().optional(),
-        listaRequerimientosId: yup.array().of(yup.number()).optional(),
+        listaRequerimientosId: yup.array().of(yup.number()).optional().default([]),
         listaArchivos: yup.array().of(
             yup.object().shape({
                 nombre: yup.string().required("El nombre del archivo es obligatorio"),

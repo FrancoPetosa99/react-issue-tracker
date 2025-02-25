@@ -9,7 +9,7 @@ import {
 import Table from "./Table";
 import PageController from "./PageController";
 
-function Dashboard({ children, data, columnsSchema, pageSchema, columnFilters }) {
+function Dashboard({ children, data, columnsSchema, pageSchema, columnFilters, updateData }) {
 
   const table = useReactTable({
     columns: columnsSchema,
@@ -27,7 +27,8 @@ function Dashboard({ children, data, columnsSchema, pageSchema, columnFilters })
         const rowValue = row.getValue(columnId);
         return filterValue.some(value => value === rowValue);
       }
-    }
+    },
+    meta: { updateData: updateData }
   });
 
   return (

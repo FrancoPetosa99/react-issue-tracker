@@ -5,7 +5,7 @@ import getExternalUsers from "../../../services/getExternalUsers";
 import { AuthContext } from "../../../context/AuthContext";
 import Spinner from "../../Spinner";
 import { useNavigate } from "react-router-dom";
-import UserModal from "../../modales/UserModal";
+import UserModal from "../../modales/usuarios/UserModal";
 import FiltersLayout from "../FiltersLayout";
 import FilterInput from "../FilterInput";
 
