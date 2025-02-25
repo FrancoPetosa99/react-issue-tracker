@@ -80,28 +80,7 @@ function RequestTable({ children }) {
     const [filter, setFilter] = useState(filterObj);
     const [solicitudes, setSolicitudes] = useState(solicitudes_json);
     const [filteredSolicitudes, setFilteredSolicitudes] = useState(solicitudes_json);
-    // Add these state variables at the beginning of your component
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(3); // Adjust number of items per page as needed
-
-    // Add these pagination calculations before the return statement
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredSolicitudes.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredSolicitudes.length / itemsPerPage);
-
-    // Add these pagination handler functions
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const handlePrevious = () => {
-        setCurrentPage(prev => Math.max(prev - 1, 1));
-    };
-
-    const handleNext = () => {
-        setCurrentPage(prev => Math.min(prev + 1, totalPages));
-    };
+    
     // Better approach:
     let modal = useRef(null);
 
@@ -230,7 +209,7 @@ function RequestTable({ children }) {
             
                 <div class="container row">
                     <div class="col-3  d-flex container justify-content-start align-items-end">
-                        <button type="button" className="btn btn-outline-primary   justify-content-center align-items-center" onClick={handleNewRequest}>Nueva Solicitud</button>
+                        <button type="button" className="btn btn-outline-primary   justify-content-center align-items-center" onClick={handleNewRequest}>+ Nueva Solicitud</button>
                     </div>
                     <div class="container col-9 row gap-3  ">
                         <div class="col">
