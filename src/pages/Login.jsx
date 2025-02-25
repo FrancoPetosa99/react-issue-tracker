@@ -4,36 +4,6 @@ import LogInForm from '../components/LogInForm';
 import { Link } from 'react-router-dom';
 
 function Login() {
-    const loginStyles = {
-        background: 'linear-gradient(to bottom, #475BEB, #030D59)',
-        minHeight: '100vh'
-    }
-
-    const registerButtonStyle = {
-        backgroundColor: 'transparent',
-        border: '1px solid white',
-        color: 'white',
-        padding: '0.5rem 1.5rem',
-        borderRadius: '20px',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease'
-    }
-
-    const headerStyle = {
-        padding: '1rem 2rem',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        gap: '1rem'
-    }
-
-    const contentStyle = {
-        display: 'flex',
-        flexDirection: 'row',
-        height: 'calc(100vh - 70px)',
-        padding: '0 2rem'
-    }
 
     return (
         <div style={loginStyles}>
@@ -46,12 +16,8 @@ function Login() {
                         ...registerButtonStyle,
                         textDecoration: 'none'
                     }}
-                    onMouseOver={(e) => {
-                        e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
-                    }}
-                    onMouseOut={(e) => {
-                        e.target.style.backgroundColor = 'transparent'
-                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)' }
+                    onMouseOut={(e) => e.target.style.backgroundColor = 'transparent' }
                 >
                     Register
                 </Link>
@@ -71,6 +37,37 @@ function Login() {
             </div>
         </div>
     );
+}
+
+const loginStyles = {
+    background: 'linear-gradient(to bottom, #475BEB, #030D59)',
+    minHeight: '100vh'
+}
+
+const registerButtonStyle = {
+    backgroundColor: 'transparent',
+    border: '1px solid white',
+    color: 'white',
+    padding: '0.5rem 1.5rem',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease'
+}
+
+const headerStyle = {
+    padding: '1rem 2rem',
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: '1rem'
+}
+
+const contentStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    height: 'calc(100vh - 70px)',
+    padding: '0 2rem'
 }
 
 export default Login;

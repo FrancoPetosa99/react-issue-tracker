@@ -1,40 +1,54 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import Toast from '../utils/Toast';
+import login from '../services/login';
 
 function LogInForm() {
-    const formStyle = {
-        backgroundColor: "white",
-        padding: "2.5rem",
-        borderRadius: "25px",
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-        width: "100%",
-        maxWidth: "500px"
-    }
 
-    const inputStyle = {
-        padding: "0.8rem",
-        marginBottom: "1rem",
-        borderRadius: "12px",
-        border: "1px solid #e0e0e0",
-        backgroundColor: "#f8f9fa",
-        fontSize: "0.9rem"
-    }
+    const [ formData, setFormData ] = useState({ email: '', password: '' });
 
-    const buttonStyle = {
-        width: "100%",
-        padding: "0.8rem",
-        borderRadius: "12px",
-        backgroundColor: "#030D59",
-        border: "none",
-        color: "white",
-        fontWeight: "500",
-        marginTop: "1rem"
-    }
+    const [ loading, setLoading ] = useState(false);
+
+    const navegate = useNavigate();
+
+    const { setIsAuthenticated, setAuthToken, setCurrentUser } = useContext(AuthContext);
+
+    const handleSubmit = (e)=> {
+
+        e.preventDefault();
+
+        setLoading(true);
+
+       login(formData)
+        .then((data) => {
+            console.log(data);
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("authToken", data.authToken);
+            localStorage.setItem("currentUser", JSON.stringify(data.currentUser));
+            setIsAuthenticated(true);
+            setAuthToken(data.authToken);
+            setCurrentUser(data.currentUser);
+            Toast({ icon: 'success', title: 'Bienvenido ' + data.currentUser.nombreUsuario, text: 'Inicio de sesión exitoso' });
+            navegate('/');
+        })
+        .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' +  e.message }))
+        .finally(()=> setLoading(false));
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
 
     return (
-        <form style={formStyle}>
+        <form onSubmit={handleSubmit} style={formStyle}>
             <div className="mb-4">
                 <p className="text-muted mb-2">¡BIENVENIDO DE VUELTA!</p>
                 <h2 className="mb-4">Log In</h2>
@@ -46,6 +60,9 @@ function LogInForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Email"
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -55,6 +72,9 @@ function LogInForm() {
                     className="form-control" 
                     style={inputStyle}
                     placeholder="Password"
+                    name='password'
+                    value={formData.password}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -80,6 +100,35 @@ function LogInForm() {
             </div>
         </form>
     );
+}
+
+const formStyle = {
+    backgroundColor: "white",
+    padding: "2.5rem",
+    borderRadius: "25px",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
+    width: "100%",
+    maxWidth: "500px"
+}
+
+const inputStyle = {
+    padding: "0.8rem",
+    marginBottom: "1rem",
+    borderRadius: "12px",
+    border: "1px solid #e0e0e0",
+    backgroundColor: "#f8f9fa",
+    fontSize: "0.9rem"
+}
+
+const buttonStyle = {
+    width: "100%",
+    padding: "0.8rem",
+    borderRadius: "12px",
+    backgroundColor: "#030D59",
+    border: "none",
+    color: "white",
+    fontWeight: "500",
+    marginTop: "1rem"
 }
 
 export default LogInForm;

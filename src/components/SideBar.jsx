@@ -6,64 +6,35 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogOutButton'
-
-    
-
+import ConfirmModal from '../utils/ConfirmModal';
+import Toast from '../utils/Toast';
+import IsAuthenticated from '../groupsAndConditions/IsAuthenticated';
+import IsInterno from '../groupsAndConditions/IsInterno';
 
 function SideBar() {
+
     const navegate = useNavigate();
-    const { isAuthenticated, logout } = useContext(AuthContext);
-    
-    const stylesNav = {
-        height: '100vh',
-        width: '100%',
-        background: 'linear-gradient(to bottom, #475BEB, #030D59)',
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: "center",
-        fontSize: "1.2rem",
-        flexDirection: 'column',
-        overflowY: 'auto',
-        padding: "1rem"
-    };
 
-    const stylesLogo = {
-        height: 'auto',
-        width: '100px',
-    };
-    const navTextLink = {
-        color: 'white'
-    };
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
-    const navItemStyles = {
-        display: 'flex',
-        justifyContent: 'left',
-        width: '100%',
-        marginLeft: "4vw",
-        alignItems: "center",
-        color: 'white',
-        gap: '2vw'
+    const logout = (event) => {
+
+        event.preventDefault();
         
-    };
-
-    const navTextButton = {
-        color: 'white',
-        background: "transparent",
-        border: "none"
-    }
-    const navItemsLayoutStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        gap: "1rem"
-    };
-
-    const navIcon = {
-        marginRight: "1rem"
-    }
-
-    return (
+        ConfirmModal(() => {
+            localStorage.setItem("isAuthenticated", "false");
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("currentUser");
+            setIsAuthenticated(false);
+            Toast({title: 'Se ha cerrado la sesión con éxito'});
+            navegate("/login");
+        }, {
+          text: '¿Estás seguro de que deseas cerrar sesión? Tendrás que volver a iniciar sesión para acceder a tu cuenta.'
+        });
+      };
+    
+      
+      return (
         <nav style={stylesNav} className="navbar navbar-dark"> 
             <Link to="/">
                 <img style={stylesLogo} src="./src/public/logo.webp" alt="Logo" />
@@ -79,6 +50,11 @@ function SideBar() {
                     <Link style={navTextLink} className="nav-link" to="/"><i style={navIcon} className="bi bi-grid"></i>Mis Solicitudes</Link>
                 </li>
                 <li style={navItemStyles}>
+                    <IsInterno>
+                        <Link style={navTextLink} className="nav-link" to="/users"><i style={navIcon} className="bi bi-people"></i>Usuarios</Link>
+                    </IsInterno>
+                </li>
+                <li style={navItemStyles}>
                     
                     <Link style={navTextLink} className="nav-link" to="/profile"><i style={navIcon} className="bi bi-person"></i>Mi Perfil</Link>
                 </li>
@@ -88,20 +64,64 @@ function SideBar() {
                 </li>
             </ul>
             <ul style={navItemsLayoutStyles} className="navbar-nav w-100">
-                {!isAuthenticated && (
+                <IsAuthenticated>
                     <li style={navItemStyles}>
-                        <Link style={navTextLink} className="nav-link" to="/login"><i style={navIcon} className="bi bi-box-arrow-right"></i>LogOut</Link>
+                        {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} logout={logout} />}
                     </li>
-                )}
-                {isAuthenticated && (
-                    <li style={navItemStyles}>
-                        
-                        {isAuthenticated && <LogoutButton navIcon={navIcon} styleButton={navTextButton} setIsAuthenticated={logout} />}
-                    </li>
-                )}
+                </IsAuthenticated>
             </ul>
         </nav>
     );
+}
+
+const stylesNav = {
+    height: '100vh',
+    width: '100%',
+    background: 'linear-gradient(to bottom, #475BEB, #030D59)',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: "center",
+    fontSize: "1.2rem",
+    flexDirection: 'column',
+    overflowY: 'auto',
+    padding: "1rem"
+};
+
+const stylesLogo = {
+    height: 'auto',
+    width: '100px',
+};
+
+const navTextLink = {
+    color: 'white'
+};
+
+const navItemStyles = {
+    display: 'flex',
+    justifyContent: 'left',
+    width: '100%',
+    marginLeft: "4vw",
+    alignItems: "center",
+    color: 'white',
+    gap: '2vw'
+};
+
+const navTextButton = {
+    color: 'white',
+    background: "transparent",
+    border: "none"
+}
+
+const navItemsLayoutStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    gap: "1rem"
+};
+
+const navIcon = {
+    marginRight: "1rem"
 }
 
 export default SideBar;

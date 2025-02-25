@@ -10,20 +10,50 @@ import Admin from './pages/Admin';
 import Profile from './pages/Profile';
 import AuthProvider from './context/AuthContext';
 import NotFound from './components/NotFound';
-
+import RegisterExternalUser from './pages/RegisterExternalUser';
+import Users from './pages/Users';
+import Unauthorized from "./pages/Unauthorized";
+import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
 
 function App() {
+
   return (
     <AuthProvider>  
       <Router>
         <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Config />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Admin />} />
-            <Route path="*" element={<NotFound />} />
+
+          <Route 
+            path="/login" element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            } 
+          />
+          
+          <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Config />} />
+
+          <Route 
+            path="/" element={
+              <PrivateRoute>
+                <Admin />
+              </PrivateRoute>
+            } 
+          />
+
+          <Route 
+            path="/users" element={
+              <PrivateRoute requiredRoles={[ 'interno' ]}>
+                <Users />
+              </PrivateRoute>
+            } 
+          />
+
+          <Route path="/register" element={<RegisterExternalUser />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
       </Router>
     </AuthProvider>

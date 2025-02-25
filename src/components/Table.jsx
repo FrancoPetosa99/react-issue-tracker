@@ -1,85 +1,65 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/offcanvas';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, {useState, useEffect} from 'react';
-import { IoIosArrowRoundDown } from "react-icons/io";
-import { IoIosArrowRoundUp } from "react-icons/io";
+import React, { useState } from 'react';
 import ViewRequestModal from './ViewRequestModal';
-import { Modal } from 'bootstrap'; 
+import FormatDate from '../utils/FormatDate';
 
-function Table({solicitudes}) {
-    const [viewRequest, setViewRequest] = useState(false);
+function Table({ solicitudes }) {
+
+    const [ show, setShow ] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
-
-    useEffect(() => {
-        if(viewRequest) {
-            const modal = new Modal(document.getElementById('viewRequestModal'));
-            modal.show();
-            
-            // Add event listener for modal close
-            const modalElement = document.getElementById('viewRequestModal');
-            modalElement.addEventListener('hidden.bs.modal', () => {
-                setViewRequest(false);
-            });
-        }
-    }, [viewRequest]);
 
     const handleViewRequest = (solicitud) => {
         setSelectedRequest(solicitud);
-        setViewRequest(true);
+        setShow(true);
     };
 
     const getPriorityColor = (priority) => {
         const styles = {
-            urgente: {
+            'Urgente': {
                 backgroundColor: '#90000F' // Darkest/most intense red
             },
-            alta: {
+            'Alta': {
                 backgroundColor: '#dc3545' // Bright red
             },
-            media: {
+            'Media': {
                 backgroundColor: '#ff6b6b' // Medium red
             },
-            baja: {
+            'Baja': {
                 backgroundColor: '#ffb4b4' // Light red
             }
         };
 
-        return styles[priority?.toLowerCase()] || { backgroundColor: '#dc3545' };
+        return styles[priority] || { backgroundColor: '#dc3545' };
     };
 
     return (
         <table className="table table-hover table-responsive info">
-            {viewRequest && <ViewRequestModal solicitud={selectedRequest} />}
+            {show && <ViewRequestModal setShow={setShow} solicitud={selectedRequest} />}
             <caption>Lista de Solicitudes</caption>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Fecha Alta</th>
                     <th scope="col">Codigo</th>
                     <th scope="col">Prioridad</th>
                     <th scope="col">Tipo</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Asunto</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Propietario</th>
-                    <th scope="col">Ver Detalle</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody className="table-group-divider">
                 {solicitudes.map((solicitud) => (
-                    <tr key={solicitud.num}>
-                        <td>{solicitud.num}</td>
-                        <td>{solicitud.date}</td>
-                        <td>{solicitud.cod}</td>
-                        <td style={getPriorityColor(solicitud.priority)}>
-                            {solicitud.priority}
+                    <tr key={solicitud.id}>
+                        <td>{FormatDate(solicitud.createdAt)}</td>
+                        <td>{solicitud.codigo}</td>
+                        <td style={getPriorityColor(solicitud.prioridad)}>
+                            {solicitud.prioridad}
                         </td>
-                        <td>{solicitud.tipo}</td>
-                        <td>{solicitud.categoria}</td>
-                        <td>{solicitud.subject}</td>
-                        <td>{solicitud.state}</td>
-                        <td>{solicitud.author}</td>
+                        <td>{solicitud.tipoRequerimiento}</td>
+                        <td>{solicitud.estado}</td>
+                        <td>{solicitud.usuarioPropietario ? solicitud.usuarioPropietario : '-'}</td>
                         <td>
                             <button 
                                 onClick={() => handleViewRequest(solicitud)} 
