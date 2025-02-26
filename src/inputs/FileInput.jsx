@@ -50,19 +50,35 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
         setUploadedFiles(filteredFiles);
         callback(filteredFiles);
     };
+
+    const fileDropStyles = showError 
+    ? 'file-drop-area border rounded d-flex flex-column align-items-center justify-content-center text-center p-3 border border-danger'
+    : 'file-drop-area border rounded d-flex flex-column align-items-center justify-content-center text-center p-3';
+
+    const labelStyles = showError
+    ? 'mt-2 text-danger'
+    : 'mt-2';
+
+    const uploadFileIcon = showError
+    ? 'bi bi-upload display-6 text-danger'
+    : 'bi bi-upload display-6 text-primary';
+
+    const uploadedFilesContainer = showError
+    ? 'list-group mt-3 border border-danger'
+    : 'list-group mt-3'
     
     return (
-        <div style={{ width: '100%' }} className="mb-3">
+        <div className="container mb-3">
             <label className="form-label">
                 {label} {required && <span className="text-danger">*</span>} {<small className="text-muted fs-7">{descripcion}</small>}
             </label>
 
             <div 
-                className="file-drop-area border rounded d-flex flex-column align-items-center justify-content-center text-center p-3"
+                className={fileDropStyles}
                 onClick={handleClick}
             >
-                <i className="bi bi-upload display-6 text-primary"></i>
-                <p className="mt-2 text-muted">Haz clic o arrastra archivos aquí</p>
+                <i className={uploadFileIcon}></i>
+                <p className={labelStyles}>Haz clic o arrastra archivos aquí</p>
             </div>
 
             <input
@@ -74,10 +90,10 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
                 onChange={handleFileChange}
             />
 
-            {showError && <div className="text-danger mt-1">{errorMessage}</div>}
+            {showError && <p className="text-danger mt-1">{errorMessage}</p>}
 
             {uploadedFiles.length > 0 && (
-                <ul className="list-group mt-3">
+                <ul className={uploadedFilesContainer}>
                     {uploadedFiles.map((archivo) => (
                         <li key={archivo.nombre} className="list-group-item d-flex justify-content-between align-items-center">
                             <div>
@@ -101,7 +117,6 @@ function FileInput({ name, label, descripcion, required, showError, errorMessage
                     ))}
                 </ul>
             )}
-
         </div>
     );
 }

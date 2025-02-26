@@ -1,9 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCircleUser } from "react-icons/fa6";
-import FormatDate from '../../utils/FormatDate';
+import FormatDateAndTime from '../../utils/FormatDateAndTime';
 
 function Comentario({ comentario }) {
-    console.log(comentario)
     return (
         <div className="card my-3 shadow-sm">
             <div className="card-body">
@@ -12,7 +11,7 @@ function Comentario({ comentario }) {
                         <FaRegCircleUser className="me-2 text-primary" size={24} />
                         <h6 className="mb-0">{comentario.emisor}</h6>
                     </div>
-                    <small className="text-muted">{FormatDate(comentario.fecha)}</small>
+                    <small className="text-muted">{FormatDateAndTime(comentario.createdAt)}</small>
                 </div>
                 <p className="mb-0">{comentario.descripcion}</p>
             </div>

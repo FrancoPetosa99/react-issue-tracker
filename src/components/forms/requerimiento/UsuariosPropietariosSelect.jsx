@@ -43,7 +43,7 @@ function UsuariosPropietariosSelect({ field, showError, errorMessage  }){
             isMulti={false}
             handleChange={handleChange} 
             name={'usuarioPropietarioId'} 
-            label={'Asignar Requerimiento'}
+            label={'Asignar Propietario'}
             placeholder={'Seleccionar Propietario...'}
             loadOptions={loadOptions}
             isClearable={true}

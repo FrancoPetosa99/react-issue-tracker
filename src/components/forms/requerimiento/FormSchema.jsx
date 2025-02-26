@@ -3,8 +3,8 @@ import * as yup from "yup";
 function FormSchema() {
 
     const schema = yup.object().shape({
-        descripcion: yup.string().required("La descripcion es obligatoria"),
-        asunto: yup.string().required("El asunto es obligatorio"),
+        descripcion: yup.string().max(100, "Máximo 500 caracteres").required("La descripcion es obligatoria"),
+        asunto: yup.string().max(50, "Máximo 100 caracteres").required("El asunto es obligatorio"),
         prioridad: yup.string().required("Seleccionar prioridad es obligatorio"),
         estado: yup.string().required("El estado es obligatorio").default('Abierto'),
         tipoRequerimientoId: yup.number().required("Seleccionar tipo es obligatorio"),

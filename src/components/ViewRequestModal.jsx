@@ -15,9 +15,6 @@ import FileIcons from './icons/FileIcons';
 import getRequerimientoById from '../services/getRequerimientoById';
 import Toast from '../utils/Toast';
 import Spinner from './Spinner';
-import AsignarPropietarioSelect from './modales/requerimientos/visualizarRequerimiento/AsignarPropietarioSelect';
-import IsInterno from '../groupsAndConditions/IsInterno';
-import IsExterno from '../groupsAndConditions/IsExterno';
 
 function ViewRequestModal({ setShow, requerimientoId }) {
 
@@ -185,7 +182,7 @@ function ViewRequestModal({ setShow, requerimientoId }) {
                                 <h5>Actividad</h5>
 
                                 <ComentarioController 
-                                    comentarios={comentarios.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))}
+                                    comentarios={comentarios}
                                     setComentarios={setComentarios}
                                     requerimientoId={solicitud.id}
                                 />

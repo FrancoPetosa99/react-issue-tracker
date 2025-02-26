@@ -56,12 +56,12 @@ function RequerimientosDashboards() {
     .catch((e)=> Toast({ icon: 'error', title: 'Ups!', text: 'Ha ocurrido un error: ' + e.mssage }))
     .finally(()=> setLoading(false));
 
-  }, []);
+  }, [showNewRequerimientoModal]);
 
   return (
     <div className="container mt-2">
       
-      { !loading &&
+      { data.length > 0 &&
         <>
           <Dashboard
             data={data}
@@ -116,7 +116,7 @@ function RequerimientosDashboards() {
         </>
       }
 
-      { loading && <Spinner size={60} /> }
+      { (loading && data.length === 0) && <Spinner size={60} /> }
 
     </div>
   );

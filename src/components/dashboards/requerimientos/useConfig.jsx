@@ -16,6 +16,7 @@ function useConfig() {
 
     const updateUsuarioPropietario = (rowId, label) => {
 
+        console.log(data);
         setData((prevData) =>
             prevData.map((requerimiento) =>
                 requerimiento.id === rowId
@@ -23,7 +24,8 @@ function useConfig() {
                         ...requerimiento, 
                         usuarioPropietario: label, 
                         estado:'Asignado', 
-                        canViewDetails: (currentUser.nombreUsuario === requerimiento.usuarioEmisor || currentUser.nombreUsuario === requerimiento.usuarioPropietario)
+                        canViewDetails: (currentUser.nombreUsuario === requerimiento.usuarioEmisor || 
+                                        currentUser.nombreUsuario === requerimiento.usuarioPropietario)
                     }
                     : requerimiento
             )
@@ -79,7 +81,7 @@ function useConfig() {
                             />
                         </IsInterno>
                         <IsExterno>
-                            <p>Sin Asignar</p>
+                            N/A    
                         </IsExterno>
                     </div>
                 )
