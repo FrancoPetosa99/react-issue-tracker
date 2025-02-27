@@ -19,25 +19,30 @@ Sigue estos pasos para instalar y ejecutar el proyecto en tu entorno local:
 
 Asegúrate de tener **Node.js** instalado en tu sistema.  
 
-🔹 **Verificar instalación de Node.js y npm**  
-
-Ejecuta el siguiente comando en la terminal:  
+🔹 **Verificar instalación de Node.js y npm**   
 
 ```sh
 node -v
+```
 
 ### 1️⃣ Clonar el repositorio  
 
 ```sh
 git clone https://github.com/tu-usuario/react-issue-tracker.git
 cd react-issue-tracker
+```
 
 ### 2️⃣ Instalar dependencias
 
 ```sh
 npm install
+```
 
 ### 3️⃣ Correr proyecto
 
 ```sh
 npm run dev
+```
+
+### 4️⃣ Abrir navegador
+
