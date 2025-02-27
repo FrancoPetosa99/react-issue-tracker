@@ -54,10 +54,10 @@ Abrir en el navegador esta ruta
 http://localhost:5173/
 ```
 
-## Integrates
-1. Petosa Ayala Franco
-2. Bresciani Isabella ❤️
-   
+## 👥 Integrantes  
+1. [Petosa Ayala Franco](https://www.linkedin.com/in/franco-petosa-ayala-48b8b9206/)  
+2. [Bresciani Isabella ❤️](https://www.linkedin.com/in/isabellabresciani/)  
+
 ## Profesores
 1. Leopoldo Nahuel
 2. Marchessini Javier
