@@ -1,6 +1,7 @@
 # 📌 React Issue Tracker 
 
 | <h1>UTN-FRLP</h1>| <img src="./logo.png" alt="Logo del Proyecto" width="100"> |
+|-------------------------|----------------------------------|
 
 El proyecto **Issue Tracker** es desarrollado por estudiantes de Ingeniería en Sistemas de Información de la Universidad Tecnológica Nacional - Regional La Plata, para la materia Diseño de Sistemas de Información.
 
