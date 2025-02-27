@@ -1,6 +1,8 @@
-# 📌 React Issue Tracker  
+# 📌 React Issue Tracker 
 
-Un **Issue Tracker** desarrollado con React para gestionar y dar seguimiento a problemas y tareas dentro de un proyecto.  
+| <h1>UTN-FRLP</h1>| <img src="./logo.png" alt="Logo del Proyecto" width="100"> |
+
+El proyecto **Issue Tracker** es desarrollado por estudiantes de Ingeniería en Sistemas de Información de la Universidad Tecnológica Nacional - Regional La Plata, para la materia Diseño de Sistemas de Información.
 
 ## 🚀 Tecnologías utilizadas  
 
@@ -51,3 +53,11 @@ Abrir en el navegador esta ruta
 ```sh
 http://localhost:5173/
 ```
+
+## Integrates
+1. Petosa Ayala Franco
+2. Bresciani Isabella ❤️
+   
+## Profesores
+1. Leopoldo Nahuel
+2. Marchessini Javier
