@@ -46,7 +46,7 @@ npm run dev
 
 ### 4️⃣ Abrir navegador
 
-Abrir en el navegador
+Abrir en el navegador esta ruta
 
 ```sh
 http://localhost:5173/
